@@ -11,6 +11,6 @@ public interface OptimizationProblem {
 
     ArrayList<State> result(State s,Action a);
 
-    int eval(State s);
+    double eval(State s);
 
 }
