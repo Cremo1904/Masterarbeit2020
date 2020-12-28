@@ -36,14 +36,14 @@ public class MainDriver {
         MiniMAS mas = new MiniMAS();
         //OptimizeAgent[] agents = new OptimizeAgent[m];
         mas.initHopper();
-        double[] distances = new double[30];
+        double[] distances = new double[300];
 
         try {
 
             FileReader fr2 = new FileReader("Angebote_300C");
             BufferedReader br2 = new BufferedReader(fr2);
 
-            for (int i = 0; i < (30); i++) {
+            for (int i = 0; i < (300); i++) {
                 index = Integer.parseInt(br2.readLine());
                 quality = Integer.parseInt(br2.readLine());
                 lon = Double.parseDouble(br2.readLine());
@@ -64,7 +64,7 @@ public class MainDriver {
 
 
             HashMap<String, Object> angebot = new HashMap();
-            for (int j = 0; j < 30; j++) {
+            for (int j = 0; j < 300; j++) {
                 angebot = (HashMap) Blackboard.get(Integer.toString(j));
                 GHRequest request = new GHRequest(53.3133432, 7.6189827, (double)angebot.get("lat"), (double)angebot.get("lon"));
                 request.putHint("calcPoints", false);
@@ -82,10 +82,13 @@ public class MainDriver {
         }
 
 
-        SAProblem prob = new SAProblem(30, 85, distances);
-        SimulatedAnnealing SA = new SimulatedAnnealing(0.03);
+        long time1 = System.currentTimeMillis();
+        SAProblemTest prob = new SAProblemTest(100, 60, distances);
+        SimulatedAnnealing SA = new SimulatedAnnealing(0.0003);
         SA.solve(prob,SimulatedAnnealingStrategy.EXPOTENTIAL,false);
-        System.out.println(SA.finalState.getVector());
+        long time2 = System.currentTimeMillis();
+        System.out.println("Zeit in ms: " + (time2-time1));
+        //System.out.println(SA.finalState.getVector());
 
         /*
         MathematicalEqualityProblem ME = new MathematicalEqualityProblem(1,2,3,4,30,30);

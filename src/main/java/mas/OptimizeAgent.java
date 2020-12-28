@@ -91,7 +91,8 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
                 vector = psobehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 3:
-                //
+                SABehaviour saBehaviour = new SABehaviour();
+                vector = saBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 4:
                 //
