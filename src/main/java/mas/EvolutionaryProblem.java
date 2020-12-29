@@ -31,13 +31,13 @@ public class EvolutionaryProblem implements GeneticProblem {
     }
 
     @Override
-    public ArrayList<State> initialPopulation(int size) {
-        ArrayList<State> result = new ArrayList<>();
-        Random rnd = new Random();
+    public ArrayList<EvolutionaryState> initialPopulation(int size) {
+        ArrayList<EvolutionaryState> result = new ArrayList<>();
+        //Random rnd = new Random();
         for (int i = 0; i < size; i++) {
             EvolutionaryState mes = new EvolutionaryState(dimensions*3);
             for (int j = 0; j < dimensions*3; j++) {
-                mes.vector[j] =  0; //rnd.nextInt(demand);                                        //hier evtl anpassen
+                mes.vector[j] = 0; //rnd.nextInt(demand);                                        //hier evtl anpassen
             }
             result.add(mes);
         }
@@ -45,8 +45,7 @@ public class EvolutionaryProblem implements GeneticProblem {
     }
 
     @Override
-    public double fitness(State s) {
-        EvolutionaryState mes = (EvolutionaryState)s;
+    public double fitness(EvolutionaryState mes) {
 
         double count = 0;
         double obj = 0;
@@ -123,56 +122,39 @@ public class EvolutionaryProblem implements GeneticProblem {
     }
 
     @Override
-    public State crossover(State s1, State s2) {
-        EvolutionaryState mes1 = (EvolutionaryState)s1;
-        EvolutionaryState mes2 = (EvolutionaryState)s2;
+    public EvolutionaryState crossover(double[] v1, double[] v2) { //State s1, State s2) {
         EvolutionaryState result = new EvolutionaryState(dimensions*3);
 
         Random rnd = new Random();
         int cindex = rnd.nextInt((dimensions*3)-1) + 1;
-
         for (int i = 0; i < cindex; i++) {
-            result.vector[i] = mes1.vector[i];
+            result.vector[i] = v1[i];
         }
         for (int i = cindex; i < dimensions*3 ; i++) {
-            result.vector[i] = mes2.vector[i];
+            result.vector[i] = v2[i];
         }
+
         return result;
+
     }
 
     @Override
-    public State mutate(State s) {
-        EvolutionaryState mes = (EvolutionaryState)s;
-        EvolutionaryState result = new EvolutionaryState(dimensions*3);
+    public EvolutionaryState mutate(EvolutionaryState mes) {
 
         Random rnd = new Random();
         int mindex = rnd.nextInt(dimensions*3);
-
-        double from = 0;
-        double speed = 0;
-        for (int i = 0; i < dimensions*3; i++ ) {
-            if(i != mindex) {
-                result.vector[i] = mes.vector[i];
-            } else {
-                from = mes.vector[i];
-                //speed = Math.round(rnd.nextDouble()* (demand * 0.2));
-                if (speed < 1) {
-                    speed = 1;
-                }
-                if (rnd.nextDouble() > 0.5) {
-                    result.vector[i] = from + speed;
-                } else {
-                    result.vector[i] = from - speed;
-                }
-                if (result.vector[i] > demand) {
-                    result.vector[i] = demand;
-                } else if (result.vector[i] < 0) {
-                    result.vector[i] = 0;
-                }
-            }
+        double from = mes.vector[mindex];
+        if (rnd.nextDouble() > 0.5) {
+            mes.vector[mindex] = from + 1;
+        } else {
+            mes.vector[mindex] = from - 1;
         }
-
-        return result;
+        if (mes.vector[mindex] > demand) {
+            mes.vector[mindex] = demand;
+        } else if (mes.vector[mindex] < 0) {
+            mes.vector[mindex] = 0;
+        }
+        return mes;
     }
 
 }
@@ -183,6 +165,10 @@ class EvolutionaryState implements State {
 
     public EvolutionaryState(int n){
         vector = new double[n];
+    }
+
+    public EvolutionaryState(double[] vector){
+        this.vector = vector;
     }
 
     @Override

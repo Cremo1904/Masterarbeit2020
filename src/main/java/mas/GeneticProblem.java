@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public interface GeneticProblem {
 
-    ArrayList<State> initialPopulation(int size);
+    ArrayList<EvolutionaryState> initialPopulation(int size);
 
-    double fitness(State s);
+    double fitness(EvolutionaryState s);
 
-    State crossover(State s1,State s2);
+    EvolutionaryState crossover(double[] v1, double[] v2);
 
-    State mutate(State s);
+    EvolutionaryState mutate(EvolutionaryState s);
 
 }

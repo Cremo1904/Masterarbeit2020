@@ -19,12 +19,12 @@ public class EvolutionaryAlgorithm {
         this.demand = demand;
     }
 
-    public State finalState;
+    public EvolutionaryState finalState;
 
     public void solve(GeneticProblem gp,int generations){
 
         //initialization
-        ArrayList<State> population = gp.initialPopulation(population_size);
+        ArrayList<EvolutionaryState> population = gp.initialPopulation(population_size);
         EvolutionaryState best = null;
         int k = 0;
         while(k < generations) {
@@ -32,15 +32,16 @@ public class EvolutionaryAlgorithm {
             Random rnd = new Random();
 
             //crossover
-            ArrayList<State> co_population = new ArrayList<>();
+            ArrayList<EvolutionaryState> co_population = new ArrayList<>();
             for (int i = 0; i < population_size*2; i++) {
                 int j = rnd.nextInt(population_size);
                 int l = rnd.nextInt(population_size);
-                co_population.add(gp.crossover(population.get(j), population.get(l)));
+                co_population.add(gp.crossover(population.get(j).vector, population.get(l).vector));
             }
 
+
             //mutate
-            ArrayList<State> mut_population = new ArrayList<>();
+            ArrayList<EvolutionaryState> mut_population = new ArrayList<>();
             for (int i = 0; i < population_size*2; i++) {
                 mut_population.add(gp.mutate(co_population.get(i)));
             }
@@ -52,15 +53,15 @@ public class EvolutionaryAlgorithm {
             if (best != null) mut_population.add(best);
 
             //evaluate
-            double fitness_sum = 0;
+            //double fitness_sum = 0;
             double bestFitness = Double.MAX_VALUE;
-            double worstFitness = 0;
+            //double worstFitness = 0;
 
-            ArrayList<Pair<State, Double>> populationFitness = new ArrayList<>();
-            for (State p : mut_population) {
+            ArrayList<Pair<EvolutionaryState, Double>> populationFitness = new ArrayList<>();
+            for (EvolutionaryState es : mut_population) {
 
                 //prüfen ob zu viele einheiten verteilt
-                EvolutionaryState es = (EvolutionaryState) p;
+                //EvolutionaryState es = (EvolutionaryState) p;
                 double count = 0;
                 for (int i = 0; i < dim*3; i++) {
                     count += es.vector[i];
@@ -71,23 +72,23 @@ public class EvolutionaryAlgorithm {
                     }
                 }
 
-                double fitness = gp.fitness(p);
-                populationFitness.add(new Pair<>(p, fitness));
-                fitness_sum += fitness;
-                if(fitness > worstFitness) worstFitness = fitness;
+                double fitness = gp.fitness(es);
+                populationFitness.add(new Pair<>(es, fitness));
+                //fitness_sum += fitness;
+                //if(fitness > worstFitness) worstFitness = fitness;
                 if(fitness < bestFitness) {
                     bestFitness = fitness;
                     best = es;
                 }
             }
-            double avgFitness = fitness_sum / population.size();
+            //double avgFitness = fitness_sum / population.size();
             //System.out.println("Best Fitness generation " + k + ":  " + bestFitness);
 
 
             //Sortieren der Fitness-Liste
-            Collections.sort(populationFitness, new Comparator<Pair<State, Double>>() {
+            Collections.sort(populationFitness, new Comparator<Pair<EvolutionaryState, Double>>() {
                 @Override
-                public int compare(final Pair<State, Double> o1, final Pair<State, Double> o2) {
+                public int compare(final Pair<EvolutionaryState, Double> o1, final Pair<EvolutionaryState, Double> o2) {
                     if (o1.getValue() > o2.getValue()) {
                         return 1;
                     } else if (o1.getValue().equals(o2.getValue())) {
@@ -99,7 +100,7 @@ public class EvolutionaryAlgorithm {
             });
 
             //Select Population
-            ArrayList<State> newPopulation = new ArrayList<>();
+            ArrayList<EvolutionaryState> newPopulation = new ArrayList<>();
             while (newPopulation.size() < population_size) {
                 for (int i = 0; i < population_size; i++) {
                     newPopulation.add(populationFitness.get(i).getKey());
@@ -114,9 +115,9 @@ public class EvolutionaryAlgorithm {
 
         //after k iterations return answer
         double bestFitness = Double.MIN_VALUE;
-        State bestState = null;
+        EvolutionaryState bestState = null;
 
-        for(State s : population){
+        for(EvolutionaryState s : population){
             if(bestState == null || gp.fitness(s) < bestFitness){
                 bestState = s;
                 bestFitness = gp.fitness(s);
