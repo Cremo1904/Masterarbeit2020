@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.UUID;
 
 public class MainDriver {
 
@@ -81,22 +80,28 @@ public class MainDriver {
 
         }
 
-
+        /*
         long time1 = System.currentTimeMillis();
         SAProblemTest prob = new SAProblemTest(100, 60, distances);
-        SimulatedAnnealing SA = new SimulatedAnnealing(0.0003);
+        SimulatedAnnealing SA = new SimulatedAnnealing(0.00015);
         SA.solve(prob,SimulatedAnnealingStrategy.EXPOTENTIAL,false);
         long time2 = System.currentTimeMillis();
         System.out.println("Zeit in ms: " + (time2-time1));
-        //System.out.println(SA.finalState.getVector());
 
-        /*
-        MathematicalEqualityProblem ME = new MathematicalEqualityProblem(1,2,3,4,30,30);
-        GeneticAlghorithm GA = new GeneticAlghorithm(20,0.2,0.1);
-        GA.solve(ME,10000);
+         */
+
+
+
+        EvolutionaryProblem EP= new EvolutionaryProblem(100, 85, distances);
+        EvolutionaryAlgorithm GA = new EvolutionaryAlgorithm(25, 10, 85);
+        long time1 = System.currentTimeMillis();
+        GA.solve(EP,5000);
+        long time2 = System.currentTimeMillis();
+        System.out.println("Zeit in ms: " + (time2-time1));
         System.out.println(GA.finalState.toString());
-        System.out.println("Fitness : " + ME.fitness(GA.finalState));
-        */
+        System.out.println("Fitness : " + EP.fitness(GA.finalState));
+
+
     }
 
 }

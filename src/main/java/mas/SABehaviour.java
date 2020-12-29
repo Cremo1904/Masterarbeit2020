@@ -53,7 +53,7 @@ public class SABehaviour extends Behaviour {
         boolean notASolution = true;
         while (notASolution) {
             SAProblem prob = new SAProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
-            SAAlgorithm SA = new SAAlgorithm(0.0003);
+            SAAlgorithm SA = new SAAlgorithm(0.00015);
             SA.solve(prob, SimulatedAnnealingStrategy.EXPOTENTIAL, false);
 
 

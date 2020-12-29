@@ -80,7 +80,7 @@ public class RunSimulation {
                     distances[j] = path.getDistance();
                 }
 
-                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, lon, lat, constraint, 3, distances);
+                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, lon, lat, constraint, 1, distances);
                 mas.add(agents[i]);
             }
 
@@ -104,7 +104,7 @@ public class RunSimulation {
         long time = 0;
         long time2 = 0;
 
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < 100; j++) {
             try {
                 FileWriter fw = new FileWriter("ausgabe.dat");
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -181,8 +181,8 @@ public class RunSimulation {
             timeSum = timeSum + (time2-time);
         }
         System.out.println("Beste Ergebnis: " + best);
-        System.out.println("Average Ergebnis: " + sumSum/10.0);
-        System.out.println("Average Zeit: " + timeSum/10.0);
+        System.out.println("Average Ergebnis: " + sumSum/100.0);
+        System.out.println("Average Zeit: " + timeSum/100.0);
     }
 
 }
