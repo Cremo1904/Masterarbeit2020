@@ -101,7 +101,7 @@ public class BFBehaviour extends Behaviour {
         switch(constraint) {
             case 1:
                 if (edges > 0) {
-                    notMatching = true;
+                    //notMatching = true;
                 }
                 break;
             case 2:
@@ -126,7 +126,7 @@ public class BFBehaviour extends Behaviour {
                 break;
             case 4:
                 if (edges > 0) {
-                    notMatching = true;
+                    //notMatching = true;
                 }
                 if (supplyRest.containsKey(Integer.toString(rn))) {
                     sRest = (int)supplyRest.get(Integer.toString(rn));
@@ -144,7 +144,7 @@ public class BFBehaviour extends Behaviour {
                 break;
             case 5:
                 if (edges > 0) {
-                    notMatching = true;
+                    //notMatching = true;
                 }
                 if (quality != (int)angebot.get("quality")) {
                     notMatching = true;
@@ -170,7 +170,7 @@ public class BFBehaviour extends Behaviour {
                 break;
             case 7:
                 if (edges > 0) {
-                    notMatching = true;
+                    //notMatching = true;
                 }
                 if (supplyRest.containsKey(Integer.toString(rn))) {
                     sRest = (int)supplyRest.get(Integer.toString(rn));

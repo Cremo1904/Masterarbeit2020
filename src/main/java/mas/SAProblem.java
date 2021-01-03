@@ -194,52 +194,52 @@ public class SAProblem implements OptimizationProblem {
         switch(this.constraint) {
             case 1:
                 if (edges > 0) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 2:
                 if (((double)quantity / demand) < 0.7) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 3:
                 if (this.quality != quality) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 4:
                 if (edges > 0) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if (((double)quantity / demand) < 0.7) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 5:
                 if (edges > 0) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if (this.quality != quality) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 6:
                 if (((double)quantity / demand) < 0.7) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if (this.quality != quality) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 7:
                 if (edges > 0) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if (((double)quantity / demand) < 0.7) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if (this.quality != quality) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 8:
@@ -248,52 +248,52 @@ public class SAProblem implements OptimizationProblem {
         switch(constraint) {
             case 1:
                 if (supplyAlreadyUsed) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 2:
                 if ((demand / (double)quantity) < 0.7) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 3:
                 if (this.quality != quality) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 4:
                 if (supplyAlreadyUsed) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if ((demand / (double)quantity) < 0.7) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 5:
                 if (supplyAlreadyUsed) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if (this.quality != quality) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 6:
                 if ((demand / (double)quantity) < 0.7) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if (this.quality != quality) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 7:
                 if (supplyAlreadyUsed) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if ((demand / (double)quantity) < 0.7) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 if (this.quality != quality) {
-                    constraintsViolated += 1/dimensions;
+                    constraintsViolated += 1;
                 }
                 break;
             case 8:

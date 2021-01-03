@@ -159,6 +159,7 @@ public class EvolutionaryProblem implements GeneticProblem {
 
 }
 
+/*
 class EvolutionaryState implements State {
 
     public double vector[];
@@ -181,3 +182,4 @@ class EvolutionaryState implements State {
         return "";
     }
 }
+*/

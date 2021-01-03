@@ -18,7 +18,7 @@ public class RunSimulation {
 
     public static void main(String[] args) {
 
-        int m=100;
+        int m=10;
         int quality;
         int quantity;
         int index;
@@ -32,10 +32,10 @@ public class RunSimulation {
         mas.initHopper();
 
         try {
-            FileReader fr = new FileReader("Nachfragen_100C");
+            FileReader fr = new FileReader("Nachfragen_10");
             BufferedReader br = new BufferedReader(fr);
 
-            FileReader fr2 = new FileReader("Angebote_300C");
+            FileReader fr2 = new FileReader("Angebote_30");
             BufferedReader br2 = new BufferedReader(fr2);
 
             for (int i = 0; i < (m*3); i++) {
@@ -80,7 +80,7 @@ public class RunSimulation {
                     distances[j] = path.getDistance();
                 }
 
-                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, lon, lat, constraint, 1, distances);
+                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, lon, lat, constraint, 4, distances);
                 mas.add(agents[i]);
             }
 
@@ -104,7 +104,7 @@ public class RunSimulation {
         long time = 0;
         long time2 = 0;
 
-        for (int j = 0; j < 100; j++) {
+        for (int j = 0; j < 1; j++) {
             try {
                 FileWriter fw = new FileWriter("ausgabe.dat");
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -181,8 +181,8 @@ public class RunSimulation {
             timeSum = timeSum + (time2-time);
         }
         System.out.println("Beste Ergebnis: " + best);
-        System.out.println("Average Ergebnis: " + sumSum/100.0);
-        System.out.println("Average Zeit: " + timeSum/100.0);
+        System.out.println("Average Ergebnis: " + sumSum/1.0);
+        System.out.println("Average Zeit: " + timeSum/1.0);
     }
 
 }

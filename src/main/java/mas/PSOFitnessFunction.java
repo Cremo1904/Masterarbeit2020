@@ -163,10 +163,10 @@ public class PSOFitnessFunction extends FitnessFunction {
 
         double constraintsViolated = 0;
         if (Math.abs(this.quality - quality) > 2) { //bedeutet, erstmal grundsätzlich wählbar unabhängig von constraints
-            constraintsViolated += 1;
+            constraintsViolated += 0.01;
         }
         if (quantity < demand) {
-            constraintsViolated += 1;
+            constraintsViolated += 0.01;
         }
         constraintsViolated += checkConstraints(quantity, quality, demand, edges, constraint, supplyAlreadyUsed);
         return constraintsViolated;
@@ -200,64 +200,64 @@ public class PSOFitnessFunction extends FitnessFunction {
             case 1:
                 if (edges > 0) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.1;
                 }
                 break;
             case 2:
                 if (((double)quantity / demand) < 0.7) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 3:
                 if (this.quality != quality) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
 
                 }
                 break;
             case 4:
                 if (edges > 0) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.1;
                 }
                 if (((double)quantity / demand) < 0.7) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 5:
                 if (edges > 0) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.1;
                 }
                 if (this.quality != quality) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 6:
                 if (((double)quantity / demand) < 0.7) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 if (this.quality != quality) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 7:
                 if (edges > 0) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.1;
                 }
                 if (((double)quantity / demand) < 0.7) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 if (this.quality != quality) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 8:
@@ -270,63 +270,63 @@ public class PSOFitnessFunction extends FitnessFunction {
             case 1:
                 if (supplyAlreadyUsed) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 2:
                 if ((demand / (double)quantity) < 0.7) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 3:
                 if (this.quality != quality) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 4:
                 if (supplyAlreadyUsed) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 if ((demand / (double)quantity) < 0.7) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 5:
                 if (supplyAlreadyUsed) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 if (this.quality != quality) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 6:
                 if ((demand / (double)quantity) < 0.7) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 if (this.quality != quality) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 7:
                 if (supplyAlreadyUsed) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 if ((demand / (double)quantity) < 0.7) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 if (this.quality != quality) {
                     notMatching = true;
-                    constraintsViolated += 1/dim;
+                    constraintsViolated += 0.01;
                 }
                 break;
             case 8:

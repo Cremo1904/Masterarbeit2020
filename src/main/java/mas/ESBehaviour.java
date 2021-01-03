@@ -1,9 +1,8 @@
 package mas;
 
-
 import java.util.HashMap;
 
-public class SABehaviour extends Behaviour {
+public class ESBehaviour extends Behaviour {
 
     public double[] generateSolution(int demand, int quality, HashMap<String, Object> supplyRest, int dim, int constraint, double[] distances) {
         double[] vector = new double[dim*3];
@@ -37,15 +36,14 @@ public class SABehaviour extends Behaviour {
         }
 
 
-        SAProblem f = new SAProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
+        ESProblem f = new ESProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
         boolean notASolution = true;
         while (notASolution) {
-            SAProblem prob = new SAProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
-            SAAlgorithm SA = new SAAlgorithm(0.00015);
-            SA.solve(prob, SimulatedAnnealingStrategy.EXPOTENTIAL, false);
+            ESProblem ESP= new ESProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
+            ESAlgorithm ESA = new ESAlgorithm(25, dim, demand);
+            ESA.solve(ESP,5000);
 
-
-            vector = SA.finalState.getVector();
+            vector = ESA.finalState.vector;
 
             if (f.checkSolution(vector)) {
                 notASolution = false;
@@ -57,4 +55,5 @@ public class SABehaviour extends Behaviour {
 
 
 }
+
 
