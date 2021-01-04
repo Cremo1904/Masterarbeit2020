@@ -73,8 +73,10 @@ public class PSOFitnessFunction extends FitnessFunction {
             int edges = 0;
             for (int i = 0; i < this.dim*3; i++) {
                 if (position[i] > 0) {
+
                     angebot = (HashMap) Blackboard.get(Integer.toString(i));
                     aQuality = (int) angebot.get("quality");
+                    /*
                     boolean supplyAlreadyUsed = false;
                     if (supplyRest.containsKey(Integer.toString(i))) {
                         aQuantity = (int) supplyRest.get(Integer.toString(i));
@@ -85,8 +87,10 @@ public class PSOFitnessFunction extends FitnessFunction {
                         aQuantity = (int) angebot.get("quantity");
                     }
                     aConstraint = (int)angebot.get("constraint");
-                    double constraintsViolated = matching(aQuantity, aQuality, position[i], edges, aConstraint, supplyAlreadyUsed);
-                    if (constraintsViolated == 0) {
+                    double constraintsViolated = matching(aQuantity, aQuality, position[i], edges, aConstraint, supplyAlreadyUsed, distances[i]);
+
+                     */
+                    //if (constraintsViolated == 0) {
                         //aLon = (double) angebot.get("lon");
                         //aLat = (double) angebot.get("lat");
                         //if (position[i] > (double) aQuantity) {
@@ -106,10 +110,10 @@ public class PSOFitnessFunction extends FitnessFunction {
                             amount += position[i];
                             edges += 1;
                         //}
-                    } else {
-                        //obj += 1;
-                        obj += constraintsViolated;
-                    }
+                    //} else {
+                    //    //obj += 1;
+                    //    obj += constraintsViolated;
+                    //}
                 }
             }
             if (amount > 0) {
@@ -133,6 +137,7 @@ public class PSOFitnessFunction extends FitnessFunction {
         if (count > (double)this.quantity) {                 //hohe Strafkosten für jede Einheit über Quantity
             return false;
         } else {                                        //hier eigentliche Berechnung der Fitness
+            /*
             int edges = 0;
             for (int i = 0; i < this.dim*3; i++) {
                 if (position[i] > 0) {
@@ -148,27 +153,29 @@ public class PSOFitnessFunction extends FitnessFunction {
                         aQuantity = (int) angebot.get("quantity");
                     }
                     aConstraint = (int)angebot.get("constraint");
-                    if (matching(aQuantity, aQuality, position[i], edges, aConstraint, supplyAlreadyUsed) == 0) {
+                    if (matching(aQuantity, aQuality, position[i], edges, aConstraint, supplyAlreadyUsed, distances[i]) == 0) {
                         edges += 1;
                     } else {
                         return false;
                     }
                 }
             }
+
+             */
             return true;
         }
     }
 
-    public double matching(int quantity, int quality, double demand, int edges, int constraint, boolean supplyAlreadyUsed) {
+    public double matching(int quantity, int quality, double demand, int edges, int constraint, boolean supplyAlreadyUsed, double dist) {
 
         double constraintsViolated = 0;
         if (Math.abs(this.quality - quality) > 2) { //bedeutet, erstmal grundsätzlich wählbar unabhängig von constraints
-            constraintsViolated += 0.01;
+            constraintsViolated += 1;
         }
         if (quantity < demand) {
-            constraintsViolated += 0.01;
+            constraintsViolated += 1;
         }
-        constraintsViolated += checkConstraints(quantity, quality, demand, edges, constraint, supplyAlreadyUsed);
+        //constraintsViolated += checkConstraints(quantity, quality, demand, edges, constraint, supplyAlreadyUsed, dist);
         return constraintsViolated;
 
 
@@ -189,88 +196,77 @@ public class PSOFitnessFunction extends FitnessFunction {
     }
 
 
-    public double checkConstraints(int quantity, int quality, double demand, int edges, int constraint, boolean supplyAlreadyUsed) {
+    /*
+    public double checkConstraints(int quantity, int quality, double demand, int edges, int constraint, boolean supplyAlreadyUsed, double dist) {
         boolean notMatching = false;
-        double constraintsViolated = 0;
+        //double constraintsViolated = 0;
         //int sRest;
         //double dRest;
-        //HashMap<String, Object> angebot = new HashMap();
-        //angebot = (HashMap)Blackboard.get(Integer.toString(rn));
+        HashMap<String, Object> angebot = new HashMap();
+        angebot = (HashMap)Blackboard.get(Integer.toString(rn));
         switch(this.constraint) {
             case 1:
-                if (edges > 0) {
+                if (dist > 20000.0) {
                     notMatching = true;
-                    constraintsViolated += 0.1;
                 }
                 break;
             case 2:
-                if (((double)quantity / demand) < 0.7) {
+                if (quantity < 50) {
                     notMatching = true;
-                    constraintsViolated += 0.01;
                 }
                 break;
             case 3:
-                if (this.quality != quality) {
+                if (quality != this.quality) {
                     notMatching = true;
-                    constraintsViolated += 0.01;
-
                 }
                 break;
             case 4:
-                if (edges > 0) {
+                if (dist > 20000.0) {
                     notMatching = true;
-                    constraintsViolated += 0.1;
                 }
-                if (((double)quantity / demand) < 0.7) {
+                if (quantity < 50) {
                     notMatching = true;
-                    constraintsViolated += 0.01;
                 }
                 break;
             case 5:
-                if (edges > 0) {
+                if (dist > 20000.0) {
                     notMatching = true;
-                    constraintsViolated += 0.1;
                 }
-                if (this.quality != quality) {
+                if (quality != this.quality) {
                     notMatching = true;
-                    constraintsViolated += 0.01;
                 }
                 break;
             case 6:
-                if (((double)quantity / demand) < 0.7) {
+                if (quantity < 50) {
                     notMatching = true;
-                    constraintsViolated += 0.01;
                 }
-                if (this.quality != quality) {
+                if (quality != this.quality) {
                     notMatching = true;
-                    constraintsViolated += 0.01;
                 }
                 break;
             case 7:
-                if (edges > 0) {
+                if (dist > 20000.0) {
                     notMatching = true;
-                    constraintsViolated += 0.1;
                 }
-                if (((double)quantity / demand) < 0.7) {
+                if (quantity < 50) {
                     notMatching = true;
-                    constraintsViolated += 0.01;
                 }
-                if (this.quality != quality) {
+                if (quality != this.quality) {
                     notMatching = true;
-                    constraintsViolated += 0.01;
                 }
                 break;
             case 8:
                 break;
         }
-        //if (notMatching) {
-        //    return notMatching;
-        //}
+        if (notMatching) {
+            return notMatching;
+        }
         switch(constraint) {
             case 1:
-                if (supplyAlreadyUsed) {
-                    notMatching = true;
-                    constraintsViolated += 0.01;
+                if (supplyRest.containsKey(Integer.toString(rn))) {
+                    if ((int)supplyRest.get(Integer.toString(rn)) != (int)angebot.get("quantity")) {
+                        notMatching = true;
+                    }
                 }
                 break;
             case 2:
@@ -335,5 +331,7 @@ public class PSOFitnessFunction extends FitnessFunction {
         //return notMatching;
         return constraintsViolated;
     }
+
+     */
 
 }

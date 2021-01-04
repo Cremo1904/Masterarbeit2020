@@ -80,18 +80,18 @@ public class MainDriver {
 
         }
 
-        /*
+
         long time1 = System.currentTimeMillis();
         SAProblemTest prob = new SAProblemTest(100, 60, distances);
-        SimulatedAnnealing SA = new SimulatedAnnealing(0.00015);
+        SimulatedAnnealing SA = new SimulatedAnnealing(0.0003);
         SA.solve(prob,SimulatedAnnealingStrategy.EXPOTENTIAL,false);
         long time2 = System.currentTimeMillis();
         System.out.println("Zeit in ms: " + (time2-time1));
 
-         */
 
 
 
+        /*
         EvolutionaryProblem EP= new EvolutionaryProblem(100, 85, distances);
         EvolutionaryAlgorithm GA = new EvolutionaryAlgorithm(25, 10, 85);
         long time1 = System.currentTimeMillis();
@@ -100,6 +100,8 @@ public class MainDriver {
         System.out.println("Zeit in ms: " + (time2-time1));
         System.out.println(GA.finalState.toString());
         System.out.println("Fitness : " + EP.fitness(GA.finalState));
+
+         */
 
 
     }

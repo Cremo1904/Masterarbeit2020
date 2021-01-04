@@ -12,7 +12,7 @@ public class BFBehaviour extends Behaviour {
 
     }
 
-    public double[] generateSolution(int demand, int quality, HashMap<String, Object> supplyRest, int dim, int constraint) {
+    public double[] generateSolution(int demand, int quality, HashMap<String, Object> supplyRest, int dim, int constraint, double[] distances) {
         double[] vector = new double[dim*3];
         int edges = 0;
         MersenneTwister rng = new MersenneTwister();
@@ -28,7 +28,7 @@ public class BFBehaviour extends Behaviour {
                         break;
                     }
                 }
-                if (matching(quality, edges, demand, supplyRest, m, constraint)) {
+                if (matching(quality, edges, demand, supplyRest, m, constraint, distances[m])) {
                     success = true;
                     break;
                 }
@@ -72,12 +72,12 @@ public class BFBehaviour extends Behaviour {
     }
 
 
-    public boolean matching(int quality, int edges, int demand, HashMap<String, Object> supplyRest, int m, int constraint) {
+    public boolean matching(int quality, int edges, int demand, HashMap<String, Object> supplyRest, int m, int constraint, double dist) {
 
         HashMap<String, Object> angebot = new HashMap();
         angebot = (HashMap) Blackboard.get(Integer.toString(m));
         if (Math.abs(quality - (int) angebot.get("quality")) <= 2) { //bedeutet, erstmal grundsätzlich wählbar unabhängig von constraints
-            boolean notMatching = checkConstraints(quality, edges, demand, supplyRest, m, constraint);
+            boolean notMatching = checkConstraints(quality, edges, demand, supplyRest, m, constraint, dist);
             if (notMatching) {
                 return false;
             }
@@ -92,7 +92,7 @@ public class BFBehaviour extends Behaviour {
         return false;
     }
 
-    public boolean checkConstraints(int quality, int edges, int demand, HashMap<String, Object> supplyRest, int rn, int constraint) {
+    public boolean checkConstraints(int quality, int edges, int demand, HashMap<String, Object> supplyRest, int rn, int constraint, double dist) {
         boolean notMatching = false;
         int sRest;
         double dRest;
@@ -100,23 +100,13 @@ public class BFBehaviour extends Behaviour {
         angebot = (HashMap)Blackboard.get(Integer.toString(rn));
         switch(constraint) {
             case 1:
-                if (edges > 0) {
-                    //notMatching = true;
+                if (dist > 20000.0) {
+                    notMatching = true;
                 }
                 break;
             case 2:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demand;
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demand;
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
+                if ((int)angebot.get("quantity") < 50) {
+                    notMatching = true;
                 }
                 break;
             case 3:
@@ -125,65 +115,35 @@ public class BFBehaviour extends Behaviour {
                 }
                 break;
             case 4:
-                if (edges > 0) {
-                    //notMatching = true;
+                if (dist > 20000.0) {
+                    notMatching = true;
                 }
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demand;
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demand;
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
+                if ((int)angebot.get("quantity") < 50) {
+                    notMatching = true;
                 }
                 break;
             case 5:
-                if (edges > 0) {
-                    //notMatching = true;
+                if (dist > 20000.0) {
+                    notMatching = true;
                 }
                 if (quality != (int)angebot.get("quality")) {
                     notMatching = true;
                 }
                 break;
             case 6:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demand;
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demand;
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
+                if ((int)angebot.get("quantity") < 50) {
+                    notMatching = true;
                 }
                 if (quality != (int)angebot.get("quality")) {
                     notMatching = true;
                 }
                 break;
             case 7:
-                if (edges > 0) {
-                    //notMatching = true;
+                if (dist > 20000.0) {
+                    notMatching = true;
                 }
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demand;
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demand;
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
+                if ((int)angebot.get("quantity") < 50) {
+                    notMatching = true;
                 }
                 if (quality != (int)angebot.get("quality")) {
                     notMatching = true;
@@ -204,22 +164,12 @@ public class BFBehaviour extends Behaviour {
                 }
                 break;
             case 2:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demand;
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demand;
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
+                if (rn % 2 == 1) {
+                    notMatching = true;
                 }
                 break;
             case 3:
-                if (quality != (int)angebot.get("quality")) {
+                if (Math.abs(quality - (int)angebot.get("quality")) > 1) {
                     notMatching = true;
                 }
                 break;
@@ -229,18 +179,8 @@ public class BFBehaviour extends Behaviour {
                         notMatching = true;
                     }
                 }
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demand;
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demand;
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
+                if (rn % 2 == 1) {
+                    notMatching = true;
                 }
                 break;
             case 5:
@@ -249,25 +189,15 @@ public class BFBehaviour extends Behaviour {
                         notMatching = true;
                     }
                 }
-                if (quality != (int)angebot.get("quality")) {
+                if (Math.abs(quality - (int)angebot.get("quality")) > 1) {
                     notMatching = true;
                 }
                 break;
             case 6:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demand;
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demand;
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
+                if (rn % 2 == 1) {
+                    notMatching = true;
                 }
-                if (quality != (int)angebot.get("quality")) {
+                if (Math.abs(quality - (int)angebot.get("quality")) > 1) {
                     notMatching = true;
                 }
                 break;
@@ -277,20 +207,10 @@ public class BFBehaviour extends Behaviour {
                         notMatching = true;
                     }
                 }
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demand;
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demand;
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
+                if (rn % 2 == 1) {
+                    notMatching = true;
                 }
-                if (quality != (int)angebot.get("quality")) {
+                if (Math.abs(quality - (int)angebot.get("quality")) > 1) {
                     notMatching = true;
                 }
                 break;

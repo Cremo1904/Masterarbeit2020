@@ -18,33 +18,65 @@ public class PSOBehaviour extends Behaviour {
         HashMap<String, Object> angebot = new HashMap();
         for (int i = 0; i < dim*3; i++) {
             angebot = (HashMap) Blackboard.get(Integer.toString(i));
-            int aQuality = (int) angebot.get("quality");
+            int aQuality = (int) angebot.get("quality");                                        //genereller Ausschluss wenn Q-Delta > 2
+            int aQuantity = (int) angebot.get("quantity");
             if (Math.abs(aQuality - quality) > 2){
                 maxPositions[i] = 0;
                 continue;
             }
-            if (constraint == 3 || constraint == 5 || constraint == 6 || constraint == 7) {
+
+
+            if (constraint == 1 || constraint == 4 || constraint == 5 || constraint == 7) {     //NF-Constraint 1: Distanz muss < 15000 Meter
+                if (distances[i] > 20000.0) {
+                    maxPositions[i] = 0;
+                    continue;
+                }
+            }
+            if (constraint == 2 || constraint == 4 || constraint == 6 || constraint == 7) {     //NF-Constraint 2: Nur Angebote mit Einheiten >= 50
+                if (aQuantity < 50) {
+                    maxPositions[i] = 0;
+                    continue;
+                }
+            }
+            if (constraint == 3 || constraint == 5 || constraint == 6 || constraint == 7) {     //NF-Constraint 3: Gleiche Q
                 if (aQuality != quality) {
                     maxPositions[i] = 0;
                     continue;
                 }
             }
+
+
             int aConstraint = (int) angebot.get("constraint");
-            if (aConstraint == 1 || aConstraint == 4 || aConstraint == 5 || aConstraint == 7) {
+            if (aConstraint == 1 || aConstraint == 4 || aConstraint == 5 || aConstraint == 7) { //AN-Constraint 1: Nur exklusive Nutzung des Angebots
                 if (supplyRest.containsKey(Integer.toString(i))) {
-                    int aQuantity = (int) supplyRest.get(Integer.toString(i));
-                    if (aQuantity != (int) angebot.get("quantity")) {
+                    int quantity = (int) supplyRest.get(Integer.toString(i));
+                    if (quantity != (int) angebot.get("quantity")) {
                         maxPositions[i] = 0;
                         continue;
                     }
                 }
             }
-            //if (supplyRest.containsKey(Integer.toString(i))) {
-            //    maxPositions[i] = (int) supplyRest.get(Integer.toString(i));
-            //} else {
-            //    maxPositions[i] = (int) angebot.get("quantity");
-            //}
-            maxPositions[i] = demand;
+            if (aConstraint == 2 || aConstraint == 4 || aConstraint == 6 || aConstraint == 7) { //AN-Constraint 2: Nur von geraden Nachfragen
+                if (i % 2 == 1) {
+                    maxPositions[i] = 0;
+                    continue;
+                }
+            }
+            if (aConstraint == 3 || aConstraint == 5 || aConstraint == 6 || aConstraint == 7) { //AN-Constraint 3: Q-Delta nicht > 1
+                if (Math.abs(aQuality - quality) > 1) {
+                    maxPositions[i] = 0;
+                    continue;
+                }
+            }
+
+
+            if (supplyRest.containsKey(Integer.toString(i))) {
+                maxPositions[i] = (int) supplyRest.get(Integer.toString(i));
+            } else {
+                maxPositions[i] = aQuantity;
+            }
+
+            //maxPositions[i] = demand;
         }
 
 

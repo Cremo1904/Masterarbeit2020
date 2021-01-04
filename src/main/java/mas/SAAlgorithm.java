@@ -29,7 +29,7 @@ public class SAAlgorithm {
         double result = 1000;
         while(true){
             count += 1;
-            if (count > 150000) {
+            if (count > 100000) {
                 break;
             }
             //Get Neighbours

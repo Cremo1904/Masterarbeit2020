@@ -52,7 +52,7 @@ public class SAProblem implements OptimizationProblem {
         while (this.validSupplies[i] == -1) {
             i = rnd.nextInt(dimensions*3);
         }
-
+        int maxQuan = validSupplies[i];
         double qoi = sas.get(i);
         double to1;
         double to2;
@@ -61,27 +61,29 @@ public class SAProblem implements OptimizationProblem {
         } else {
             to1 = 0;
         }
-        if ((speed + qoi) < demand) {
+        if ((speed + qoi) < maxQuan) {
             to2 = qoi + speed;
         } else {
-            to2 = demand;
+            to2 = maxQuan;
         }
         int j = rnd.nextInt(dimensions*3);
-        while (j == i || this.validSupplies[j] == -1) {
+        while (this.validSupplies[j] == -1) {
             j = rnd.nextInt(dimensions*3);
         }
+        int maxQuan2 = validSupplies[j];
         double qoi2 = sas.get(j);
-        if (j != i) {
-            if (speed2 < qoi2) {
-                actions.add(new SAAction(i, qoi, to2, j, qoi2, qoi2-speed2));
-            } else {
-                actions.add(new SAAction(i, qoi, to2, j, qoi2, 0));
-            }
-            if ((speed2 + qoi2) < demand) {
-                actions.add(new SAAction(i, qoi, to1, j, qoi2, qoi2+speed2));
-            } else {
-                actions.add(new SAAction(i, qoi, to1, j, qoi2, demand));
-            }
+        if (j == i) {
+            qoi2 = to2;
+        }
+        if (speed2 < qoi2) {
+            actions.add(new SAAction(i, qoi, to2, j, qoi2, qoi2-speed2));
+        } else {
+            actions.add(new SAAction(i, qoi, to2, j, qoi2, 0));
+        }
+        if ((speed2 + qoi2) < maxQuan2) {
+            actions.add(new SAAction(i, qoi, to1, j, qoi2, qoi2+speed2));
+        } else {
+            actions.add(new SAAction(i, qoi, to1, j, qoi2, maxQuan2));
         }
 
         return actions;
@@ -124,11 +126,12 @@ public class SAProblem implements OptimizationProblem {
             double distCost = 0;
             double qualCost = 0;
             double amount = 0;
-            int edges = 0;
+            //int edges = 0;
             for (int i = 0; i < this.dimensions*3; i++) {
                 if (position[i] > 0) {
                     angebot = (HashMap) Blackboard.get(Integer.toString(i));
                     aQuality = (int) angebot.get("quality");
+                    /*
                     boolean supplyAlreadyUsed = false;
                     if (this.supplyRest.containsKey(Integer.toString(i))) {
                         aQuantity = (int) this.supplyRest.get(Integer.toString(i));
@@ -140,7 +143,9 @@ public class SAProblem implements OptimizationProblem {
                     }
                     aConstraint = (int)angebot.get("constraint");
                     double constraintsViolated = matching(aQuantity, aQuality, position[i], edges, aConstraint, supplyAlreadyUsed);
-                    if (constraintsViolated == 0) {
+
+                     */
+                    //if (constraintsViolated == 0) {
                         //aLon = (double) angebot.get("lon");
                         //aLat = (double) angebot.get("lat");
                         //if (position[i] > (double) aQuantity) {
@@ -158,12 +163,12 @@ public class SAProblem implements OptimizationProblem {
                         distCost += dist * position[i];
                         qualCost += delta * position[i];
                         amount += position[i];
-                        edges += 1;
+                        //edges += 1;
                         //}
-                    } else {
-                        //obj += 1;
-                        obj += constraintsViolated;
-                    }
+                    //} else {
+                    //    //obj += 1;
+                    //    obj += constraintsViolated;
+                    //}
                 }
             }
             if (amount > 0) {
@@ -184,7 +189,7 @@ public class SAProblem implements OptimizationProblem {
         if (quantity < demand) {
             constraintsViolated += 1;
         }
-        constraintsViolated += checkConstraints(quantity, quality, demand, edges, constraint, supplyAlreadyUsed);
+        //constraintsViolated += checkConstraints(quantity, quality, demand, edges, constraint, supplyAlreadyUsed);
         return constraintsViolated;
 
     }
@@ -315,6 +320,7 @@ public class SAProblem implements OptimizationProblem {
         if (count > (double)this.demand) {                 //hohe Strafkosten für jede Einheit über Quantity
             return false;
         } else {                                        //hier eigentliche Berechnung der Fitness
+            /*
             int edges = 0;
             for (int i = 0; i < this.dimensions*3; i++) {
                 if (position[i] > 0) {
@@ -337,6 +343,8 @@ public class SAProblem implements OptimizationProblem {
                     }
                 }
             }
+
+             */
             return true;
         }
     }

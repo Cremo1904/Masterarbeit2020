@@ -63,6 +63,7 @@ public class ESProblem implements GeneticProblem {
                 if (position[i] > 0) {
                     angebot = (HashMap) Blackboard.get(Integer.toString(i));
                     aQuality = (int) angebot.get("quality");
+                    /*
                     boolean supplyAlreadyUsed = false;
                     if (this.supplyRest.containsKey(Integer.toString(i))) {
                         aQuantity = (int) this.supplyRest.get(Integer.toString(i));
@@ -74,7 +75,9 @@ public class ESProblem implements GeneticProblem {
                     }
                     aConstraint = (int)angebot.get("constraint");
                     double constraintsViolated = matching(aQuantity, aQuality, position[i], edges, aConstraint, supplyAlreadyUsed);
-                    if (constraintsViolated == 0) {
+
+                     */
+                    //if (constraintsViolated == 0) {
                         //aLon = (double) angebot.get("lon");
                         //aLat = (double) angebot.get("lat");
                         //if (position[i] > (double) aQuantity) {
@@ -94,10 +97,10 @@ public class ESProblem implements GeneticProblem {
                         amount += position[i];
                         edges += 1;
                         //}
-                    } else {
-                        //obj += 1;
-                        obj += constraintsViolated;
-                    }
+                    //} else {
+                    //    //obj += 1;
+                    //    obj += constraintsViolated;
+                    //}
                 }
             }
             if (amount > 0) {
@@ -119,7 +122,7 @@ public class ESProblem implements GeneticProblem {
         if (quantity < demand) {
             constraintsViolated += 1;
         }
-        constraintsViolated += checkConstraints(quantity, quality, demand, edges, constraint, supplyAlreadyUsed);
+        //constraintsViolated += checkConstraints(quantity, quality, demand, edges, constraint, supplyAlreadyUsed);
         return constraintsViolated;
 
     }
@@ -250,6 +253,7 @@ public class ESProblem implements GeneticProblem {
         if (count > (double)this.demand) {                 //hohe Strafkosten für jede Einheit über Quantity
             return false;
         } else {                                        //hier eigentliche Berechnung der Fitness
+            /*
             int edges = 0;
             for (int i = 0; i < this.dimensions*3; i++) {
                 if (position[i] > 0) {
@@ -272,6 +276,8 @@ public class ESProblem implements GeneticProblem {
                     }
                 }
             }
+
+             */
             return true;
         }
     }
@@ -302,17 +308,32 @@ public class ESProblem implements GeneticProblem {
         while (validSupplies[mindex] == -1) {
             mindex = rnd.nextInt(dimensions*3);
         }
-
-        double from = mes.vector[mindex];
-        if (rnd.nextDouble() > 0.5) {
-            mes.vector[mindex] = from + 1;
-        } else {
-            mes.vector[mindex] = from - 1;
+        int maxQuan = validSupplies[mindex];
+        int mindex2 = rnd.nextInt(dimensions*3);
+        while (validSupplies[mindex2] == -1) {
+            mindex2 = rnd.nextInt(dimensions*3);
         }
-        if (mes.vector[mindex] > demand) {
-            mes.vector[mindex] = demand;
+        int maxQuan2 = validSupplies[mindex2];
+
+        if (rnd.nextDouble() > 0.5) {
+            mes.vector[mindex] += 1;
+        } else {
+            mes.vector[mindex] -= 1;
+        }
+        if (rnd.nextDouble() > 0.5) {
+            mes.vector[mindex2] += 1;
+        } else {
+            mes.vector[mindex2] -= 1;
+        }
+        if (mes.vector[mindex] > maxQuan) {
+            mes.vector[mindex] = maxQuan;
         } else if (mes.vector[mindex] < 0) {
             mes.vector[mindex] = 0;
+        }
+        if (mes.vector[mindex2] > maxQuan2) {
+            mes.vector[mindex2] = maxQuan2;
+        } else if (mes.vector[mindex2] < 0) {
+            mes.vector[mindex2] = 0;
         }
         return mes;
     }

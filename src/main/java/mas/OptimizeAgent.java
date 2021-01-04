@@ -84,7 +84,7 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
         switch(algo) {
             case 1:
                 BFBehaviour bfbehaviour = new BFBehaviour();
-                vector = bfbehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint);
+                vector = bfbehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 2:
                 PSOBehaviour psobehaviour = new PSOBehaviour();
