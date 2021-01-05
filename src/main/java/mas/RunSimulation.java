@@ -18,7 +18,7 @@ public class RunSimulation {
 
     public static void main(String[] args) {
 
-        int m=100;
+        int m=50;
         int quality;
         int quantity;
         int index;
@@ -33,16 +33,16 @@ public class RunSimulation {
         double gesamtNachfrage = 0.0;
 
         try {
-            FileReader fr = new FileReader("Nachfragen_100C");
+            FileReader fr = new FileReader("Nachfragen_50CS");
             BufferedReader br = new BufferedReader(fr);
 
-            FileReader fr2 = new FileReader("Angebote_300C");
+            FileReader fr2 = new FileReader("Angebote_150C");
             BufferedReader br2 = new BufferedReader(fr2);
 
-            FileReader fr3= new FileReader("Distances_100");
+            FileReader fr3= new FileReader("Distances_50S");
             BufferedReader br3 = new BufferedReader(fr3);
 
-            //FileWriter fw = new FileWriter("Distances_100");
+            //FileWriter fw = new FileWriter("Distances_100S");
             //BufferedWriter bw = new BufferedWriter(fw);
 
             for (int i = 0; i < (m*3); i++) {
@@ -115,7 +115,7 @@ public class RunSimulation {
         long time = 0;
         long time2 = 0;
 
-        for (int j = 0; j < 5; j++) {
+        for (int j = 0; j < 10; j++) {
             try {
                 FileWriter fw = new FileWriter("ausgabe.dat");
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -195,8 +195,8 @@ public class RunSimulation {
             timeSum = timeSum + (time2-time);
         }
         System.out.println("Beste Ergebnis: " + best);
-        System.out.println("Average Ergebnis: " + sumSum/5.0);
-        System.out.println("Average Zeit: " + timeSum/5.0);
+        System.out.println("Average Ergebnis: " + sumSum/10.0);
+        System.out.println("Average Zeit: " + timeSum/10.0);
     }
 
 }

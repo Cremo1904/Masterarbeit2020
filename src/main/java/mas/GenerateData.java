@@ -2,15 +2,17 @@ package mas;
 
 import org.apache.commons.math3.random.MersenneTwister;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GenerateData {
 
     public static void main(String[] args) {
 
-        int n = 1500;
+        // Generating Data
+        /*
+        int n = 150;
         int count8 = 0;
         int count7 = 0;
         int count6 = 0;
@@ -21,7 +23,7 @@ public class GenerateData {
         int count1 = 0;
 
         try {
-            FileWriter fw = new FileWriter("Angebote_1500C");
+            FileWriter fw = new FileWriter("Angebote_150C");
             BufferedWriter bw = new BufferedWriter(fw);
 
             int q = 1;
@@ -85,6 +87,152 @@ public class GenerateData {
         } catch (IOException e) {
 
         }
+
+         */
+
+
+        //Sorting Data
+        try {
+            FileReader fr = new FileReader("Nachfragen_50C");
+            BufferedReader br = new BufferedReader(fr);
+            HashMap<Integer, Object> c1 = new HashMap();
+            HashMap<Integer, Object> c2 = new HashMap();
+            HashMap<Integer, Object> c3 = new HashMap();
+            HashMap<Integer, Object> c4 = new HashMap();
+            HashMap<Integer, Object> c5 = new HashMap();
+            HashMap<Integer, Object> c6 = new HashMap();
+            HashMap<Integer, Object> c7 = new HashMap();
+            HashMap<Integer, Object> c8 = new HashMap();
+
+
+            for (int i = 0; i < 50; i++) {
+                double[] array = new double[6];
+                array[0] = Double.parseDouble(br.readLine());
+                array[1] = Double.parseDouble(br.readLine());
+                array[2] = Double.parseDouble(br.readLine());
+                array[3] = Double.parseDouble(br.readLine());
+                array[4] = Double.parseDouble(br.readLine());
+                array[5] = Double.parseDouble(br.readLine());
+                int j;
+                switch((int)array[5]) {
+                    case 1:
+                        j = c1.size();
+                        c1.put(j, array);
+                        break;
+                    case 2:
+                        j = c2.size();
+                        c2.put(j, array);
+                        break;
+                    case 3:
+                        j = c3.size();
+                        c3.put(j, array);
+                        break;
+                    case 4:
+                        j = c4.size();
+                        c4.put(j, array);
+                        break;
+                    case 5:
+                        j = c5.size();
+                        c5.put(j, array);
+                        break;
+                    case 6:
+                        j = c6.size();
+                        c6.put(j, array);
+                        break;
+                    case 7:
+                        j = c7.size();
+                        c7.put(j, array);
+                        break;
+                    case 8:
+                        j = c8.size();
+                        c8.put(j, array);
+                        break;
+                }
+            }
+            FileWriter fw = new FileWriter("Nachfragen_50CS");
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            double[] myDemand;
+            for (int j = 0; j < c7.size(); j++) {
+                myDemand = (double[])c7.get(j);
+                bw.write((int)myDemand[0] + "\n");
+                bw.write((int)myDemand[1] + "\n");
+                bw.write(myDemand[2] + "\n");
+                bw.write(myDemand[3] + "\n");
+                bw.write((int)myDemand[4] + "\n");
+                bw.write((int)myDemand[5] + "\n");
+            }
+            for (int j = 0; j < c6.size(); j++) {
+                myDemand = (double[])c6.get(j);
+                bw.write((int)myDemand[0] + "\n");
+                bw.write((int)myDemand[1] + "\n");
+                bw.write(myDemand[2] + "\n");
+                bw.write(myDemand[3] + "\n");
+                bw.write((int)myDemand[4] + "\n");
+                bw.write((int)myDemand[5] + "\n");
+            }
+            for (int j = 0; j < c5.size(); j++) {
+                myDemand = (double[])c5.get(j);
+                bw.write((int)myDemand[0] + "\n");
+                bw.write((int)myDemand[1] + "\n");
+                bw.write(myDemand[2] + "\n");
+                bw.write(myDemand[3] + "\n");
+                bw.write((int)myDemand[4] + "\n");
+                bw.write((int)myDemand[5] + "\n");
+            }
+            for (int j = 0; j < c4.size(); j++) {
+                myDemand = (double[])c4.get(j);
+                bw.write((int)myDemand[0] + "\n");
+                bw.write((int)myDemand[1] + "\n");
+                bw.write(myDemand[2] + "\n");
+                bw.write(myDemand[3] + "\n");
+                bw.write((int)myDemand[4] + "\n");
+                bw.write((int)myDemand[5] + "\n");
+            }
+            for (int j = 0; j < c3.size(); j++) {
+                myDemand = (double[])c3.get(j);
+                bw.write((int)myDemand[0] + "\n");
+                bw.write((int)myDemand[1] + "\n");
+                bw.write(myDemand[2] + "\n");
+                bw.write(myDemand[3] + "\n");
+                bw.write((int)myDemand[4] + "\n");
+                bw.write((int)myDemand[5] + "\n");
+            }
+            for (int j = 0; j < c2.size(); j++) {
+                myDemand = (double[])c2.get(j);
+                bw.write((int)myDemand[0] + "\n");
+                bw.write((int)myDemand[1] + "\n");
+                bw.write(myDemand[2] + "\n");
+                bw.write(myDemand[3] + "\n");
+                bw.write((int)myDemand[4] + "\n");
+                bw.write((int)myDemand[5] + "\n");
+            }
+            for (int j = 0; j < c1.size(); j++) {
+                myDemand = (double[])c1.get(j);
+                bw.write((int)myDemand[0] + "\n");
+                bw.write((int)myDemand[1] + "\n");
+                bw.write(myDemand[2] + "\n");
+                bw.write(myDemand[3] + "\n");
+                bw.write((int)myDemand[4] + "\n");
+                bw.write((int)myDemand[5] + "\n");
+            }
+            for (int j = 0; j < c8.size(); j++) {
+                myDemand = (double[])c8.get(j);
+                bw.write((int)myDemand[0] + "\n");
+                bw.write((int)myDemand[1] + "\n");
+                bw.write(myDemand[2] + "\n");
+                bw.write(myDemand[3] + "\n");
+                bw.write((int)myDemand[4] + "\n");
+                bw.write((int)myDemand[5] + "\n");
+            }
+            bw.close();
+
+
+        } catch (IOException e) {
+
+        }
+
+
 
     }
 }

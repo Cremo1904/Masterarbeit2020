@@ -373,6 +373,9 @@ public abstract class AbstractCOHDAAgent extends AbstractAgent {
 					}
 				}
 			}
+			if (getMAS().isFirstRound()) {
+				dirty = true;
+			}
 		}
 
 

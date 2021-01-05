@@ -282,6 +282,13 @@ public class MiniMAS {
 		return this.runden;
 	}
 
+	public boolean isFirstRound() {
+		if (this.runden < this.agents.size()) {
+			return true;
+		}
+		return false;
+	}
+
 	public String getSummen() {
 		return this.summen;
 	}
