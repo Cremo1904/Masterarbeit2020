@@ -99,42 +99,55 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
                 vector = esBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 5:
-                //
+                ABCBehaviour abcBehaviour = new ABCBehaviour();
+                vector = abcBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
         }
+        //String vectorString = "";
+        //for (int k = 0; k < vector.length; k++) {
+        //    vectorString += k + ": " + vector[k] + " ;  ";
+        //}
+        //System.out.println(vectorString);
 
 
-        int restNachfrage = (int)demandSpec.getRest();
+        //int restNachfrage = (int)demandSpec.getRest();
         for (int i = 0; i < dim*3; i++) {
             if (vector[i] > 0) {
+                int quantity = (int)vector[i];
                 HashMap<String, Object> angebot = new HashMap();
                 angebot = (HashMap) Blackboard.get(Integer.toString(i));
                 int einheitenAngebot = (int) angebot.get("quantity");
                 if (supplyRest.containsKey(Integer.toString(i))) {
-                    if (((int) supplyRest.get(Integer.toString(i)) - restNachfrage) > 0) {
-                        supplyRest.put(Integer.toString(i), ((int) supplyRest.get(Integer.toString(i)) - restNachfrage));
-                        restNachfrage = 0;
+                    //if (((int) supplyRest.get(Integer.toString(i)) - restNachfrage) > 0) {
+                    if (((int) supplyRest.get(Integer.toString(i)) - quantity) > 0) {
+                        //supplyRest.put(Integer.toString(i), ((int) supplyRest.get(Integer.toString(i)) - restNachfrage));
+                        //restNachfrage = 0;
+                        supplyRest.put(Integer.toString(i), ((int) supplyRest.get(Integer.toString(i)) - quantity));
                     } else {
-                        restNachfrage = restNachfrage - (int) supplyRest.get(Integer.toString(i));
+                        //restNachfrage = restNachfrage - (int) supplyRest.get(Integer.toString(i));
+                        //supplyRest.put(Integer.toString(i), 0);
                         supplyRest.put(Integer.toString(i), 0);
                     }
                 } else {
-                    if ((einheitenAngebot - restNachfrage) > 0) {
-                        supplyRest.put(Integer.toString(i), (einheitenAngebot - restNachfrage));
-                        restNachfrage = 0;
+                    //if ((einheitenAngebot - restNachfrage) > 0) {
+                    //    supplyRest.put(Integer.toString(i), (einheitenAngebot - restNachfrage));
+                    //    restNachfrage = 0;
+                    if ((einheitenAngebot - quantity) > 0) {
+                        supplyRest.put(Integer.toString(i), (einheitenAngebot - quantity));
                     } else {
                         supplyRest.put(Integer.toString(i), 0);
-                        restNachfrage = restNachfrage - einheitenAngebot;
+                        //restNachfrage = restNachfrage - einheitenAngebot;
                     }
                 }
                 String newEdgeId = UUID.randomUUID().toString();
                 double distance = this.distances[i];
                 int delta = Math.abs(this.quality - (int) angebot.get("quality"));
-                int quantity = (int)demandSpec.getRest() - restNachfrage;
+                //int quantity = (int)demandSpec.getRest() - restNachfrage;
                 edges newEdge = new edges(i, getId(), quantity, delta, distance);
                 myEdges.put(newEdgeId, newEdge);
                 demandSpec.getEdges().add(newEdgeId);
-                demandSpec.setRest((double)restNachfrage);
+                //demandSpec.setRest((double)restNachfrage);
+                demandSpec.setRest(demandSpec.getRest() - quantity);
             }
         }
         myDemand.put(getId(), demandSpec);
@@ -504,6 +517,9 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
                 edgecostQuality = edgecostQuality + (double)quantity * delta;
             }
             tv_local = 0.47 * (edgecostDist / (140000 * demand)) + 0.03 * (edgecostQuality / demand) + 0.5 * (rest/demand);
+            //if (getId().equals(aid)) {
+            //    System.out.println("obj_local: " + tv_local);
+            //}
             tv = tv + tv_local;
             i++;
         }
