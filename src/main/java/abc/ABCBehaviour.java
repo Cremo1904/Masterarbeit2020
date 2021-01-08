@@ -1,4 +1,9 @@
-package mas;
+package abc;
+
+import abc.ABCAlgorithm;
+import abc.ABCFitnessFunction;
+import mas.Behaviour;
+import mas.Blackboard;
 
 import java.util.HashMap;
 

@@ -1,4 +1,6 @@
-package mas;
+package abc;
+
+import mas.Blackboard;
 
 import java.util.HashMap;
 

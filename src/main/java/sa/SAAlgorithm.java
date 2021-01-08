@@ -1,22 +1,25 @@
-package mas;
+package sa;
 
 import javafx.util.Pair;
+import util.Action;
+import util.State;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SimulatedAnnealing {
+public class SAAlgorithm {
 
     //Cooling rate
     double coolingRate;
 
-    public SimulatedAnnealing(double coolingRate){
+    public SAAlgorithm(double coolingRate){
         solution = new ArrayList<>();
         finalState = null;
         this.coolingRate = coolingRate;
     }
 
     private ArrayList<Action> solution;
-    public SAStateTest finalState;
+    public SAState finalState;
 
     public void solve(OptimizationProblem op, SimulatedAnnealingStrategy strategy , boolean maximize){
 
@@ -24,12 +27,12 @@ public class SimulatedAnnealing {
 
         //Set initial temp
         double temp = 1;
-        SAProblemTest prob = (SAProblemTest)op;
+        SAProblem prob = (SAProblem)op;
         int count = 1;
         double result = 1000;
         while(true){
             count += 1;
-            if (count > 75000) {
+            if (count > 100000) {
                 break;
             }
             //Get Neighbours
@@ -47,20 +50,21 @@ public class SimulatedAnnealing {
             int index = rnd.nextInt(neighbours.size());
             Pair<State,Action> psa = neighbours.get(index);
 
-            SAStateTest newstate = (SAStateTest)psa.getKey();
+            SAState newstate = (SAState)psa.getKey();
             double[] vector = newstate.getVector();
             double quantity = 0;
             for (int i = 0; i < vector.length; i++) {
                 quantity += vector[i];
             }
+
             double tval = 10000;
             double p = 0;
             if (quantity <= (double)prob.getDemand()) {
-                //for (int i = 0; i < vector.length; i++) {
-                //    vector[i] = Math.round(vector[i] * 0.5);
+                //    for (int i = 0; i < vector.length; i++) {
+                //        vector[i] = Math.round(vector[i] * 0.5);
+                //    }
                 //}
 
-            //} else {
                 tval = op.eval(psa.getKey());
                 p = acceptanceProbability(curval, tval, temp, maximize);
             }
@@ -69,7 +73,7 @@ public class SimulatedAnnealing {
             if(p > d){
                 currentState = psa.getKey();
                 solution.add(psa.getValue());
-                System.out.println("[SA] Eval : " + tval + "  Count: " + count + "   Temp: " + temp);
+                //System.out.println("[SA] Eval : " + tval + "  Count: " + count + "   Temp: " + temp);
                 result = tval;
             }
 
@@ -92,7 +96,7 @@ public class SimulatedAnnealing {
                 return;
             }
 
-            finalState = (SAStateTest)currentState;
+            finalState = (SAState)currentState;
 
         }
         System.out.println("[SA] Eval : " + result);
@@ -118,3 +122,4 @@ public class SimulatedAnnealing {
     }
 
 }
+

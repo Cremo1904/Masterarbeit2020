@@ -1,5 +1,6 @@
-package mas;
+package pso;
 
+import mas.*;
 import net.sourceforge.jswarm_pso.Neighborhood;
 import net.sourceforge.jswarm_pso.Neighborhood1D;
 import net.sourceforge.jswarm_pso.Swarm;

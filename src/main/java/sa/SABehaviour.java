@@ -1,5 +1,8 @@
-package mas;
+package sa;
 
+
+import mas.Behaviour;
+import mas.Blackboard;
 
 import java.util.HashMap;
 

@@ -1,5 +1,6 @@
-package mas;
+package pso;
 
+import mas.Blackboard;
 import net.sourceforge.jswarm_pso.FitnessFunction;
 
 import java.util.HashMap;

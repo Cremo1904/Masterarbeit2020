@@ -1,4 +1,4 @@
-package mas;
+package es;
 
 import javafx.util.Pair;
 
@@ -125,7 +125,7 @@ public class ESAlgorithm {
         }
 
         finalState = bestState;
-        System.out.println("[GA] Final State Reached !");
+        //System.out.println("[GA] Final State Reached !");
     }
 
 

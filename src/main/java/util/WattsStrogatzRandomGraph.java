@@ -1,5 +1,5 @@
-package mas;/*
- * mas.WattsStrogatzRandomGraph.java
+package util;/*
+ * util.WattsStrogatzRandomGraph.java
  * Created Aug 6, 2010
  */
 

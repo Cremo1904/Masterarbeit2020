@@ -4,6 +4,7 @@ import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.Profile;
 import com.graphhopper.reader.osm.GraphHopperOSM;
 import com.graphhopper.routing.util.EncodingManager;
+import util.WattsStrogatzRandomGraph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -240,7 +241,7 @@ public class MiniMAS {
 		int n=this.agents.size();
 
 		System.out.println("n= "+n);
-		List<Integer[]> edges=WattsStrogatzRandomGraph.connectSmallWorld(n, n/10, 0.5f); //hier das n/whatever variieren
+		List<Integer[]> edges= WattsStrogatzRandomGraph.connectSmallWorld(n, n/10, 0.5f); //hier das n/whatever variieren
 		System.out.println("Kanten erstellt: "+ edges.size());
 		for (Integer[] e:edges) {
 			connect(alist.get(e[0]),alist.get(e[1]));

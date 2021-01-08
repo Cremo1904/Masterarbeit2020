@@ -1,4 +1,4 @@
-package mas;
+package sa;
 
 public enum SimulatedAnnealingStrategy {
     LINEAR_TEMPERATURE,

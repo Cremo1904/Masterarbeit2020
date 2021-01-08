@@ -1,4 +1,4 @@
-package mas;
+package pso;
 
 import net.sourceforge.jswarm_pso.Particle;
 import net.sourceforge.jswarm_pso.ParticleUpdate;

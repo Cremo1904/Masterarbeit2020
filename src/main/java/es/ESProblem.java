@@ -1,4 +1,7 @@
-package mas;
+package es;
+
+import mas.Blackboard;
+import util.State;
 
 import java.util.ArrayList;
 import java.util.HashMap;

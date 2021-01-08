@@ -1,4 +1,4 @@
-package mas;
+package util;
 
 
 public interface Action {

@@ -1,4 +1,4 @@
-package mas;
+package abc;
 
 import java.util.ArrayList;
 import java.util.Random;

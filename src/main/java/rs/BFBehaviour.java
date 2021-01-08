@@ -1,5 +1,7 @@
-package mas;
+package rs;
 
+import mas.Behaviour;
+import mas.Blackboard;
 import org.apache.commons.math3.random.MersenneTwister;
 
 import java.util.ArrayList;

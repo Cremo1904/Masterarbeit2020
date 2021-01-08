@@ -81,7 +81,7 @@ public class RunSimulation {
                     //bw.write(distances[j] + "\n");
                 }
 
-                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, lon, lat, constraint, 2, distances);
+                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, lon, lat, constraint, 5, distances);
                 mas.add(agents[i]);
             }
 
