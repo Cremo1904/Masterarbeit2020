@@ -1,20 +1,11 @@
 package mas;
 
-import com.graphhopper.GHRequest;
-import com.graphhopper.GHResponse;
-import com.graphhopper.ResponsePath;
-
 import java.io.*;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
 public class RunSimulation {
-
-    //hier festlegen, welcher Agent genutzt wird
-    //hier festlegen, welches szenario genutzt wird
-
 
     public static void main(String[] args) {
 
@@ -90,7 +81,7 @@ public class RunSimulation {
                     //bw.write(distances[j] + "\n");
                 }
 
-                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, lon, lat, constraint, 5, distances);
+                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, lon, lat, constraint, 2, distances);
                 mas.add(agents[i]);
             }
 
@@ -115,30 +106,26 @@ public class RunSimulation {
         long time = 0;
         long time2 = 0;
 
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 1; j++) {
             try {
                 FileWriter fw = new FileWriter("ausgabe.dat");
                 BufferedWriter bw = new BufferedWriter(fw);
 
                 mas.sendMessage(new Message(agents[0].getId(), null, "start", null));
-                //mas.sendMessage(new Message(agents[0].getId(), "system", "start", null));
-
                 time = System.currentTimeMillis();
-
                 mas.execute();
-
                 time2 = System.currentTimeMillis();
+
+
                 System.out.println("Zeit vorher: " + time);
                 bw.write("# Zeit vorher: " + time);
                 bw.newLine();
                 System.out.println("Zeit nachher: " + time2);
                 bw.write("# Zeit nachher: " + time2);
                 bw.newLine();
-
                 System.out.println("Zeit Differenz: " + (time2 - time));
                 bw.write("# Zeit Differenz: " + (time2 - time));
                 bw.newLine();
-
                 bw.write("# Anzahl Agenten: " + m);
                 bw.newLine();
 
@@ -151,11 +138,9 @@ public class RunSimulation {
                 System.out.println("Tics: " + mas.getRunden());
                 bw.write("# Tics: " + mas.getRunden());
                 bw.newLine();
-
-                System.out.println("Endsumme: " + summe);
-                bw.write("# Endsumme: " + summe);
+                System.out.println("Endsumme: " + summe/m);
+                bw.write("# Endsumme: " + summe/m);
                 bw.newLine();
-
                 System.out.println(mas.getSummen());
                 bw.write(mas.getSummen());
 
@@ -163,7 +148,6 @@ public class RunSimulation {
                 AbstractCOHDAAgent.demand demandSpec;
                 System.out.println("\n");
                 Set<String> keys = output.keySet();
-
                 double restNachfrage = gesamtNachfrage;
                 double befriedigteNachfragen = 0.0;
                 int edgeCount = 0;
@@ -173,15 +157,15 @@ public class RunSimulation {
                     bw.write("Nachfrage " + str + ":");
                     demandSpec = (AbstractCOHDAAgent.demand) output.get(str);
                     //System.out.println("Rest: " + demandSpec.getRest());
-                    bw.write("Rest: " + demandSpec.getRest());
+                    bw.write("  Rest: " + demandSpec.getRest());
                     restNachfrage -= demandSpec.getQuantity() - demandSpec.getRest();
                     if (demandSpec.getQuantity() != demandSpec.getRest()) {
                         befriedigteNachfragen ++;
                     }
                     //System.out.println("Menge: " + demandSpec.getQuantity());
-                    bw.write("Menge: " + demandSpec.getQuantity());
+                    bw.write("  Menge: " + demandSpec.getQuantity());
                     //System.out.println("Kanten: " + demandSpec.getEdges().size());
-                    bw.write("Kanten: " + demandSpec.getEdges().size());
+                    bw.write("  Kanten: " + demandSpec.getEdges().size());
                     edgeCount = edgeCount + demandSpec.getEdges().size();
                 }
                 bw.close();
@@ -195,8 +179,8 @@ public class RunSimulation {
             timeSum = timeSum + (time2-time);
         }
         System.out.println("Beste Ergebnis: " + best);
-        System.out.println("Average Ergebnis: " + sumSum/10.0);
-        System.out.println("Average Zeit: " + timeSum/10.0);
+        System.out.println("Average Ergebnis: " + sumSum/1.0);
+        System.out.println("Average Zeit: " + timeSum/1.0);
     }
 
 }

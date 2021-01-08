@@ -1,13 +1,8 @@
 package mas;
 
-import com.graphhopper.GHRequest;
-import com.graphhopper.GHResponse;
-import com.graphhopper.ResponsePath;
 import net.sourceforge.jswarm_pso.FitnessFunction;
-import mas.PSOAgent.*;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * Sample Fitness function

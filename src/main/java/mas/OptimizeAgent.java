@@ -39,15 +39,6 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
         createKappa(tv);
     }
 
-    /*@Override
-    protected boolean compareConfigurations(HashMap<String, AgentContribution> config1,
-                                            HashMap<String, AgentContribution> config2) {
-        for (int i=0;i<dim;i++) {
-            if ((double)config1.get(getId()).getAttr("value")!=(double)config2.get(getId()).getAttr("value")) return false;
-        }
-        return true;
-    }*/
-
 
     @Override
     protected WorkingMemory decide() {
@@ -103,14 +94,8 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
                 vector = abcBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
         }
-        //String vectorString = "";
-        //for (int k = 0; k < vector.length; k++) {
-        //    vectorString += k + ": " + vector[k] + " ;  ";
-        //}
-        //System.out.println(vectorString);
 
 
-        //int restNachfrage = (int)demandSpec.getRest();
         for (int i = 0; i < dim*3; i++) {
             if (vector[i] > 0) {
                 int quantity = (int)vector[i];
@@ -118,103 +103,28 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
                 angebot = (HashMap) Blackboard.get(Integer.toString(i));
                 int einheitenAngebot = (int) angebot.get("quantity");
                 if (supplyRest.containsKey(Integer.toString(i))) {
-                    //if (((int) supplyRest.get(Integer.toString(i)) - restNachfrage) > 0) {
                     if (((int) supplyRest.get(Integer.toString(i)) - quantity) > 0) {
-                        //supplyRest.put(Integer.toString(i), ((int) supplyRest.get(Integer.toString(i)) - restNachfrage));
-                        //restNachfrage = 0;
                         supplyRest.put(Integer.toString(i), ((int) supplyRest.get(Integer.toString(i)) - quantity));
                     } else {
-                        //restNachfrage = restNachfrage - (int) supplyRest.get(Integer.toString(i));
-                        //supplyRest.put(Integer.toString(i), 0);
                         supplyRest.put(Integer.toString(i), 0);
                     }
                 } else {
-                    //if ((einheitenAngebot - restNachfrage) > 0) {
-                    //    supplyRest.put(Integer.toString(i), (einheitenAngebot - restNachfrage));
-                    //    restNachfrage = 0;
                     if ((einheitenAngebot - quantity) > 0) {
                         supplyRest.put(Integer.toString(i), (einheitenAngebot - quantity));
                     } else {
                         supplyRest.put(Integer.toString(i), 0);
-                        //restNachfrage = restNachfrage - einheitenAngebot;
                     }
                 }
                 String newEdgeId = UUID.randomUUID().toString();
                 double distance = this.distances[i];
                 int delta = Math.abs(this.quality - (int) angebot.get("quality"));
-                //int quantity = (int)demandSpec.getRest() - restNachfrage;
                 edges newEdge = new edges(i, getId(), quantity, delta, distance);
                 myEdges.put(newEdgeId, newEdge);
                 demandSpec.getEdges().add(newEdgeId);
-                //demandSpec.setRest((double)restNachfrage);
                 demandSpec.setRest(demandSpec.getRest() - quantity);
             }
         }
         myDemand.put(getId(), demandSpec);
-
-
-
-
-/*
-        MersenneTwister rng = new MersenneTwister();
-        while (demandSpec.getRest() > 0) {
-            int restNachfrage = (int)demandSpec.getRest();
-            ArrayList<String> list = new ArrayList<String>();
-            boolean success = false;
-            int m = -1;
-            int i = 0;
-            while (i<(dim*3)) {
-                while (true) {
-                    m = rng.nextInt(dim * 3);
-                    if (!list.contains(Integer.toString(m))) {
-                        break;
-                    }
-                }
-                if (matching(demandSpec, supplyRest, m)) {
-                    success = true;
-                    break;
-                }
-                list.add(Integer.toString(m));
-                i++;
-            }
-
-            if (success && m != -1) {
-                HashMap<String, Object> angebot = new HashMap();
-                angebot = (HashMap) Blackboard.get(Integer.toString(m));
-                int einheitenAngebot = (int) angebot.get("quantity");
-                //int restNachfrage;
-                if (supplyRest.containsKey(Integer.toString(m))) {
-                    if (((int) supplyRest.get(Integer.toString(m)) - restNachfrage) > 0) {
-                        supplyRest.put(Integer.toString(m), ((int) supplyRest.get(Integer.toString(m)) - restNachfrage));
-                        restNachfrage = 0;
-                    } else {
-                        restNachfrage = restNachfrage - (int) supplyRest.get(Integer.toString(m));
-                        supplyRest.put(Integer.toString(m), 0);
-                    }
-                } else {
-                    if ((einheitenAngebot - restNachfrage) > 0) {
-                        supplyRest.put(Integer.toString(m), (einheitenAngebot - restNachfrage));
-                        restNachfrage = 0;
-                    } else {
-                        supplyRest.put(Integer.toString(m), 0);
-                        restNachfrage = restNachfrage - einheitenAngebot;
-                    }
-                }
-
-                String newEdgeId = UUID.randomUUID().toString();
-                double distance = distances[m]; //calcRoute(this.lat, this.lon, (double) angebot.get("lat"), (double) angebot.get("lon"));
-                int delta = Math.abs(this.quality - (int) angebot.get("quality"));
-                int quantity = (int)demandSpec.getRest() - restNachfrage;
-                edges newEdge = new edges(m, getId(), quantity, delta, distance);
-                myEdges.put(newEdgeId, newEdge);
-                demandSpec.getEdges().add(newEdgeId);
-                demandSpec.setRest((double)restNachfrage);
-            } else {
-                break;
-            }
-        }
-        myDemand.put(getId(), demandSpec);
-*/
 
 
         boolean success = false;
@@ -237,249 +147,6 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
         }
     }
 
-    public double calcRoute(double lat1, double lon1, double lat2, double lon2) {
-        GHRequest request = new GHRequest(lat1, lon1, lat2, lon2);
-        request.putHint("calcPoints", false);
-        request.putHint("instructions", false);
-        request.setProfile("car").setLocale(Locale.GERMANY);
-        GHResponse route = getMAS().hopper.route(request);
-        if (route.hasErrors())
-            throw new RuntimeException(route.getErrors().toString());
-
-        ResponsePath path = route.getBest();
-        return path.getDistance();
-    }
-
-
-    public boolean matching(demand demandSpec, HashMap<String, Object> supplyRest, int m) {
-
-        boolean success = false;
-        HashMap<String, Object> angebot = new HashMap();
-        angebot = (HashMap) Blackboard.get(Integer.toString(m));
-        if (Math.abs(this.quality - (int) angebot.get("quality")) <= 2) { //bedeutet, erstmal grundsätzlich wählbar unabhängig von constraints
-            boolean notMatching = checkConstraints(demandSpec, supplyRest, m);
-            if (notMatching) {
-                return false;
-            }
-            if (supplyRest.containsKey(Integer.toString(m))) {
-                if ((int) supplyRest.get(Integer.toString(m)) > 0) {
-                    return true;
-                }
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    public boolean checkConstraints(demand demandSpec, HashMap<String, Object> supplyRest, int rn) {
-        boolean notMatching = false;
-        int sRest;
-        double dRest;
-        HashMap<String, Object> angebot = new HashMap();
-        angebot = (HashMap)Blackboard.get(Integer.toString(rn));
-        switch(this.constraint) {
-            case 1:
-                if (demandSpec.getEdges().size() > 0) {
-                    notMatching = true;
-                }
-                break;
-            case 2:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demandSpec.getRest();
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demandSpec.getRest();
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                }
-                break;
-            case 3:
-                if (this.quality != (int)angebot.get("quality")) {
-                    notMatching = true;
-                }
-                break;
-            case 4:
-                if (demandSpec.getEdges().size() > 0) {
-                    notMatching = true;
-                }
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demandSpec.getRest();
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demandSpec.getRest();
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                }
-                break;
-            case 5:
-                if (demandSpec.getEdges().size() > 0) {
-                    notMatching = true;
-                }
-                if (this.quality != (int)angebot.get("quality")) {
-                    notMatching = true;
-                }
-                break;
-            case 6:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demandSpec.getRest();
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demandSpec.getRest();
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                }
-                if (this.quality != (int)angebot.get("quality")) {
-                    notMatching = true;
-                }
-                break;
-            case 7:
-                if (demandSpec.getEdges().size() > 0) {
-                    notMatching = true;
-                }
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demandSpec.getRest();
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demandSpec.getRest();
-                    if (((double)sRest / dRest) < 0.7) {
-                        notMatching = true;
-                    }
-                }
-                if (this.quality != (int)angebot.get("quality")) {
-                    notMatching = true;
-                }
-                break;
-            case 8:
-                break;
-        }
-        if (notMatching) {
-            return notMatching;
-        }
-        switch((int)angebot.get("constraint")) {
-            case 1:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    if ((int)supplyRest.get(Integer.toString(rn)) != (int)angebot.get("quantity")) {
-                        notMatching = true;
-                    }
-                }
-                break;
-            case 2:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demandSpec.getRest();
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demandSpec.getRest();
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                }
-                break;
-            case 3:
-                if (this.quality != (int)angebot.get("quality")) {
-                    notMatching = true;
-                }
-                break;
-            case 4:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    if ((int)supplyRest.get(Integer.toString(rn)) != (int)angebot.get("quantity")) {
-                        notMatching = true;
-                    }
-                }
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demandSpec.getRest();
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demandSpec.getRest();
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                }
-                break;
-            case 5:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    if ((int)supplyRest.get(Integer.toString(rn)) != (int)angebot.get("quantity")) {
-                        notMatching = true;
-                    }
-                }
-                if (this.quality != (int)angebot.get("quality")) {
-                    notMatching = true;
-                }
-                break;
-            case 6:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demandSpec.getRest();
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demandSpec.getRest();
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                }
-                if (this.quality != (int)angebot.get("quality")) {
-                    notMatching = true;
-                }
-                break;
-            case 7:
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    if ((int)supplyRest.get(Integer.toString(rn)) != (int)angebot.get("quantity")) {
-                        notMatching = true;
-                    }
-                }
-                if (supplyRest.containsKey(Integer.toString(rn))) {
-                    sRest = (int)supplyRest.get(Integer.toString(rn));
-                    dRest = demandSpec.getRest();
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                } else {
-                    sRest = (int)angebot.get("quantity");
-                    dRest = demandSpec.getRest();
-                    if ((dRest / (double)sRest) < 0.7) {
-                        notMatching = true;
-                    }
-                }
-                if (this.quality != (int)angebot.get("quality")) {
-                    notMatching = true;
-                }
-                break;
-            case 8:
-                break;
-        }
-        return notMatching;
-    }
 
     @Override
     public double objective(HashMap<String, Object> demandInput, HashMap<String, Object> edgesInput) {

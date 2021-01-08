@@ -33,94 +33,86 @@ public class ABCAlgorithm {
     }
 
     public void algorithm() {
-        foodSources = new ArrayList<ABCFood>();
+        foodSources = new ArrayList<>();
         rnd = new Random();
-        boolean done = false;
         generation = 0;
+        boolean finished = false;
 
         initialize();
-        memorizeBestFoodSource();
+        getBestFoodSource();
 
-        while(!done) {
+        while(!finished) {
             if(generation < maxGenerations) {
                 sendEmployedBees();
                 getFitness();
                 calculateProbabilities();
                 sendOnlookerBees();
-                memorizeBestFoodSource();
+                getBestFoodSource();
                 sendScoutBees();
 
                 generation++;
             } else {
-                done = true;
+                finished = true;
             }
 
         }
-
-
-        System.out.println("--- BEST SOLUTION ---");
-        System.out.println("cost:" + bestFoodSource.getCost());
-        //for(int i = 0; i < dim*3; i++) {
-        //    System.out.println("n = " + (i+1) + " : " + bestFoodSource.getVector(i));
-        //}
-
+        System.out.println("solution found:" + bestFoodSource.getCost());
     }
 
     public void initialize() {
-        int j = 0;
-
+        int j;
         for(int i = 0; i < numberOfFoodSources; i++) {
-            ABCFood newHoney = new ABCFood(dim, validSupplies);
+            ABCFood newABCFood = new ABCFood(dim, validSupplies);
 
-            foodSources.add(newHoney);
-            j = foodSources.indexOf(newHoney);
+            foodSources.add(newABCFood);
+            j = foodSources.indexOf(newABCFood);
 
-            computeCost(foodSources.get(j));                                                                            //foodSources.get(j).computeCost();
+            calculateCost(foodSources.get(j));
         }
     }
 
-    public void computeCost(ABCFood abcf) {
-        double[] vector = abcf.getVector();
-        double calcCost = fitFunc.eval(vector);
-        abcf.setCost(calcCost);
-    }
-
-    public void memorizeBestFoodSource() {
+    public void getBestFoodSource() {
         bestFoodSource = Collections.min(foodSources);
     }
 
+    public void calculateCost(ABCFood abcFood) {
+        double[] vector = abcFood.getVector();
+        double cost = fitFunc.eval(vector);
+        abcFood.setCost(cost);
+    }
+
     public void sendEmployedBees() {
-        int neighborBeeIndex = 0;
-        ABCFood currentBee = null;
-        ABCFood neighborBee = null;
+        int index;
+        ABCFood currentBee;
+        ABCFood neighborBee;
 
         for(int i = 0; i < numberOfFoodSources; i++) {
-            neighborBeeIndex = rnd.nextInt(numberOfFoodSources);                                                                     //getExclusiveRandomNumber(FOOD_NUMBER-1, i);
-            while (neighborBeeIndex == i) {
-                neighborBeeIndex = rnd.nextInt(numberOfFoodSources);
+            index = rnd.nextInt(numberOfFoodSources);
+            while (index == i) {
+                index = rnd.nextInt(numberOfFoodSources);
             }
             currentBee = foodSources.get(i);
-            neighborBee = foodSources.get(neighborBeeIndex);
+            neighborBee = foodSources.get(index);
             sendOut(currentBee, neighborBee);
         }
     }
 
     public void sendOnlookerBees() {
         int i = 0;
-        int t = 0;
-        int neighborBeeIndex = 0;
-        ABCFood currentBee = null;
-        ABCFood neighborBee = null;
+        int n = 0;
+        int index;
+        ABCFood currentBee;
+        ABCFood neighborBee;
 
-        while(t < numberOfFoodSources) {
+        while(n < numberOfFoodSources) {
             currentBee = foodSources.get(i);
             if(rnd.nextDouble() < currentBee.getSelectionProbability()) {
-                t++;
-                neighborBeeIndex = rnd.nextInt(numberOfFoodSources);                                                                    //getExclusiveRandomNumber(FOOD_NUMBER-1, i);
-                while (neighborBeeIndex == i) {
-                    neighborBeeIndex = rnd.nextInt(numberOfFoodSources);
+                n++;
+                index = rnd.nextInt(numberOfFoodSources);
+                while (index == i) {
+                    index = rnd.nextInt(numberOfFoodSources);
                 }
-                neighborBee = foodSources.get(neighborBeeIndex);
+                neighborBee = foodSources.get(index);
                 sendOut(currentBee, neighborBee);
             }
             i++;
@@ -130,104 +122,55 @@ public class ABCAlgorithm {
         }
     }
 
+    public void sendScoutBees() {
+        ABCFood currentBee;
+
+        for(int i = 0; i < numberOfFoodSources; i++) {
+            currentBee = foodSources.get(i);
+            if (currentBee.getLimit() > trialLimit) {
+                currentBee.initVector();
+                calculateCost(currentBee);
+                currentBee.setLimit(0);
+            }
+        }
+    }
+
     public void sendOut(ABCFood currentBee, ABCFood neighborBee) {
-        double newValue = 0.0;
-        double tmpValue = 0.0;
-        double prevCost = 0.0;
-        double currCost = 0.0;
+        double newCost;
+        double oldCost;
+        double oldParameterValue;
+        double newParameterValue;
 
-        prevCost = currentBee.getCost();
-
-        int index = rnd.nextInt(dim*3);                                                                                                    //getRandomNumber(0, MAX_LENGTH-1);
+        oldCost = currentBee.getCost();
+        int index = rnd.nextInt(dim*3);
         while (validSupplies[index] < 1) {
             index = rnd.nextInt(dim*3);
         }
 
+        oldParameterValue = currentBee.getVector(index);
+        newParameterValue = oldParameterValue + Math.round((oldParameterValue - neighborBee.getVector(index)) * (rnd.nextDouble()-0.5) * 2);
+        if(newParameterValue < 0) {
+            newParameterValue = 0;
+        }
+        if(newParameterValue > validSupplies[index]) {
+            newParameterValue = validSupplies[index];
+        }
 
-        tmpValue = currentBee.getVector(index);
-        newValue = tmpValue + Math.round((tmpValue - neighborBee.getVector(index)) * (rnd.nextDouble()-0.5) * 2);                 //hier mutation festlegen
-        /*
-        if (rnd.nextDouble() > 0.5) {
-            newValue = tmpValue + 1;//Math.round(rnd.nextDouble()*(demand*0.2));
+        currentBee.setVector(index, newParameterValue);
+        calculateCost(currentBee);
+        newCost = currentBee.getCost();
+
+        if(oldCost < newCost) {
+            currentBee.setVector(index, oldParameterValue);
+            calculateCost(currentBee);
+            currentBee.setLimit(currentBee.getLimit() + 1);
         } else {
-            newValue = tmpValue - 1;//Math.round(rnd.nextDouble()*(demand*0.2));
-        }
-
-         */
-
-        if(newValue < 0) {
-            newValue = 0;
-        }
-        if(newValue > validSupplies[index]) {                                                                                          //hier max value = demand oder validSupplies
-            newValue = validSupplies[index];
-        }
-
-        currentBee.setVector(index, newValue);
-
-        /*
-        double[] vector = currentBee.getVector();
-        double count = 0;
-        for (int i = 0; i < dim*3; i++) {
-            count += vector[i];
-        }
-        if (count > demand) {
-            for (int j = 0; j < dim*3; j++) {
-                //vector[j] = Math.round(vector[j] * 0.5);
-                if (vector[j] > 0) {
-                    vector[j] -= 1;
-                }
-            }
-        }
-        currentBee.setVector(vector);
-
-         */
-
-
-        computeCost(currentBee);                                                                                                                    //currentBee.computeCost();
-        currCost = currentBee.getCost();
-
-        if(prevCost < currCost) {
-            currentBee.setVector(index, tmpValue);
-            computeCost(currentBee);                                                                                                                //currentBee.computeCost();
-            currentBee.setTrials(currentBee.getTrials() + 1);
-        } else {
-            currentBee.setTrials(0);
-        }
-    }
-
-    public void sendScoutBees() {
-        ABCFood currentBee = null;
-
-        for(int i = 0; i < numberOfFoodSources; i++) {
-            currentBee = foodSources.get(i);
-            if (currentBee.getTrials() > trialLimit) {
-                currentBee.initVector();
-                computeCost(currentBee);                                                                                                                    //currentBee.computeCost();
-                currentBee.setTrials(0);
-            }
-        }
-    }
-
-    public void getFitness() {
-        ABCFood currentBee = null;
-        double cost = 0;
-        double fitness = 0;
-
-        for(int i = 0; i < numberOfFoodSources; i++) {
-            currentBee = foodSources.get(i);
-            cost = currentBee.getCost();
-
-            if (cost >= 0) {
-                fitness = 1.0 / ( 1.0 + cost);
-            } else {
-                fitness= 1.0 - cost; // 1.0 + abs(cost)
-            }
-            currentBee.setFitness(fitness);
+            currentBee.setLimit(0);
         }
     }
 
     public void calculateProbabilities() {
-        ABCFood currentBee = null;
+        ABCFood currentBee;
         double fitnessSum = 0;
 
         for(int i = 1; i < numberOfFoodSources; i++) {
@@ -238,6 +181,19 @@ public class ABCAlgorithm {
         for(int j = 0; j < numberOfFoodSources; j++) {
             currentBee = foodSources.get(j);
             currentBee.setSelectionProbability(currentBee.getFitness() / fitnessSum);
+        }
+    }
+
+    public void getFitness() {
+        ABCFood currentBee;
+        double cost;
+        double fitness;
+
+        for(int i = 0; i < numberOfFoodSources; i++) {
+            currentBee = foodSources.get(i);
+            cost = currentBee.getCost();
+            fitness = 1.0 / ( 1.0 + cost);
+            currentBee.setFitness(fitness);
         }
     }
 

@@ -5,7 +5,7 @@ import java.util.Random;
 public class ABCFood implements Comparable<ABCFood> {
     private int dimensions;
     private double[] vector;
-    private int trials;
+    private int limit;
     private double cost;
     private double fitness;
     private double selectionProbability;
@@ -15,24 +15,13 @@ public class ABCFood implements Comparable<ABCFood> {
     public ABCFood(int n, int[] validSupplies) {
         this.dimensions = n;
         this.vector = new double[n*3];
-        trials = 0;
-        cost = 0.0;
+        this.limit = 0;
+        this.cost = 0.0;
         this.fitness = 0.0;
-        selectionProbability = 0.0;
+        this.selectionProbability = 0.0;
         this.rnd = new Random();
         this.validSupplies = validSupplies;
         initVector();
-    }
-
-    public int compareTo(ABCFood h) {
-        int result = 0;
-        if (this.cost < h.getCost()) {
-            result = -1;
-        } else if (this.cost > h.getCost()) {
-            result = 1;
-        }
-
-        return result;
     }
 
     public void initVector() {
@@ -45,17 +34,17 @@ public class ABCFood implements Comparable<ABCFood> {
             quantity = 1;
         }
         this.vector[index] = quantity;
+    }
 
-        /*
-        for(int i = 0; i < this.dimensions*3; i++) {
-            if (validSupplies[i] > 0 && rnd.nextDouble() > 0.95) {
-                this.vector[i] = this.rnd.nextInt(validSupplies[i]);
-            } else {
-                this.vector[i] = 0;
-            }
+    public int compareTo(ABCFood otherFood) {
+        int result = 0;
+        if (this.cost < otherFood.getCost()) {
+            result = -1;
+        } else if (this.cost > otherFood.getCost()) {
+            result = 1;
         }
 
-         */
+        return result;
     }
 
     public double getCost() {
@@ -98,16 +87,12 @@ public class ABCFood implements Comparable<ABCFood> {
         return this.selectionProbability;
     }
 
-    public void setTrials(int value) {
-        this.trials = value;
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
-    public int getTrials() {
-        return this.trials;
-    }
-
-    public double RandomValue(double low, double high) {
-        return (high - low) * rnd.nextDouble() + low;
+    public int getLimit() {
+        return this.limit;
     }
 
 }

@@ -150,9 +150,8 @@ public class MiniMAS {
 		this.initAgents();
 		runden = 0;
 		summen = "";
-		//long timeToPlay = System.currentTimeMillis() + 50;
-		//while(System.currentTimeMillis()< timeToPlay) {
 		while (true) {
+			/*
 			aktuell = 0;
 			double i = 0.0;
 			for (AbstractAgent a:agents.values()) {
@@ -162,6 +161,17 @@ public class MiniMAS {
 			aktuell = aktuell / i;
 			System.out.println("Runde " + runden + " ; Lösung aktuell: " + aktuell + "\n");
 			summen = summen + runden + "   " + aktuell + System.lineSeparator();
+			 */
+
+			aktuell = agents.size();
+			for (AbstractAgent a:agents.values()) {
+				if (a.getValue() < aktuell) {
+					aktuell = a.getValue();
+				}
+			}
+			System.out.println("Runde " + runden + " ; Lösung aktuell: " + aktuell + "\n");
+			summen = summen + runden + "   " + aktuell + System.lineSeparator();
+
 			runden = runden + 1;
 			MMEvent evt=queue.poll();
 			while (evt!=null) {
