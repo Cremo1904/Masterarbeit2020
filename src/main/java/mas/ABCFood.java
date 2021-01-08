@@ -36,13 +36,26 @@ public class ABCFood implements Comparable<ABCFood> {
     }
 
     public void initVector() {
+        int index = rnd.nextInt(this.dimensions*3);
+        while (validSupplies[index] < 1) {
+            index = rnd.nextInt(this.dimensions*3);
+        }
+        int quantity = this.rnd.nextInt(validSupplies[index]);
+        if (quantity == 0) {
+            quantity = 1;
+        }
+        this.vector[index] = quantity;
+
+        /*
         for(int i = 0; i < this.dimensions*3; i++) {
-            if (validSupplies[i] > 0) {
+            if (validSupplies[i] > 0 && rnd.nextDouble() > 0.95) {
                 this.vector[i] = this.rnd.nextInt(validSupplies[i]);
             } else {
                 this.vector[i] = 0;
             }
         }
+
+         */
     }
 
     public double getCost() {

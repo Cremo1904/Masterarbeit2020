@@ -81,7 +81,7 @@ public class ABCBehaviour extends Behaviour {
             boolean notASolution = true;
             while (notASolution) {
 
-                ABCAlgorithm abc = new ABCAlgorithm(dim, demand, validSupplies, 50 , 100 , 50, abcFitFunc );
+                ABCAlgorithm abc = new ABCAlgorithm(dim, demand, validSupplies, 200 , 200 , 100, abcFitFunc );
                 abc.algorithm();
                 vector = abc.bestFoodSource.getVector();
 
