@@ -26,7 +26,6 @@ public class PSOBehaviour extends Behaviour {
                 continue;
             }
 
-
             if (constraint == 1 || constraint == 4 || constraint == 5 || constraint == 7) {     //NF-Constraint 1: Distanz muss < 15000 Meter
                 if (distances[i] > 20000.0) {
                     maxPositions[i] = 0;
@@ -45,7 +44,6 @@ public class PSOBehaviour extends Behaviour {
                     continue;
                 }
             }
-
 
             int aConstraint = (int) angebot.get("constraint");
             if (aConstraint == 1 || aConstraint == 4 || aConstraint == 5 || aConstraint == 7) { //AN-Constraint 1: Nur exklusive Nutzung des Angebots
@@ -70,14 +68,11 @@ public class PSOBehaviour extends Behaviour {
                 }
             }
 
-
             if (supplyRest.containsKey(Integer.toString(i))) {
                 maxPositions[i] = (int) supplyRest.get(Integer.toString(i));
             } else {
                 maxPositions[i] = aQuantity;
             }
-
-            //maxPositions[i] = demand;
         }
 
 
@@ -96,17 +91,8 @@ public class PSOBehaviour extends Behaviour {
 
             // Set position (and velocity) constraints. I.e.: where to look for solutions
             swarm.setInertia(0.95);
-            //swarm.setMaxPosition(demand);
             swarm.setMaxPosition(maxPositions);
             swarm.setMinPosition(0);
-            /*double[] minVelocity = new double[30];
-            double[] maxVelocity = new double[30];
-            for (int i = 0; i < 30; i++) {
-                minVelocity[i] = -(0.2 * demand);
-                maxVelocity[i] = 0.2 * demand;
-            }
-            swarm.setMinVelocity(minVelocity);
-            swarm.setMaxVelocity(maxVelocity);*/
             swarm.setMaxMinVelocity(0.2 * demand);
             swarm.setParticleUpdate(new PSOParticleUpdate(swarm.getSampleParticle(), demand));
 
@@ -125,10 +111,6 @@ public class PSOBehaviour extends Behaviour {
             }
         }
 
-        //System.out.println(time2-time1);
-        // Print results
-        //System.out.println(swarm.toStringStats());
-        //System.out.println("End: Example 1");
         return vector;
     }
 

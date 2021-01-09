@@ -9,7 +9,7 @@ public class RunSimulation {
 
     public static void main(String[] args) {
 
-        int m=50;
+        int m=10;
         int quality;
         int quantity;
         int index;
@@ -24,13 +24,13 @@ public class RunSimulation {
         double gesamtNachfrage = 0.0;
 
         try {
-            FileReader fr = new FileReader("Nachfragen_50CS");
+            FileReader fr = new FileReader("Nachfragen_10CS");
             BufferedReader br = new BufferedReader(fr);
 
-            FileReader fr2 = new FileReader("Angebote_150C");
+            FileReader fr2 = new FileReader("Angebote_30");
             BufferedReader br2 = new BufferedReader(fr2);
 
-            FileReader fr3= new FileReader("Distances_50S");
+            FileReader fr3= new FileReader("Distances_10S");
             BufferedReader br3 = new BufferedReader(fr3);
 
             //FileWriter fw = new FileWriter("Distances_100S");

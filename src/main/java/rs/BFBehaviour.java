@@ -30,7 +30,7 @@ public class BFBehaviour extends Behaviour {
                         break;
                     }
                 }
-                if (matching(quality, edges, demand, supplyRest, m, constraint, distances[m])) {
+                if (matching(quality, supplyRest, m, constraint, distances[m])) {
                     success = true;
                     break;
                 }
@@ -46,22 +46,18 @@ public class BFBehaviour extends Behaviour {
                 int einheitenAngebot = (int) angebot.get("quantity");
                 if (supplyRest.containsKey(Integer.toString(m))) {
                     if (((int) supplyRest.get(Integer.toString(m)) - demand) > 0) {
-                        //supplyRest.put(Integer.toString(m), ((int) supplyRest.get(Integer.toString(m)) - demand));
                         vector[m] = (double)demand;
                         demand = 0;
                     } else {
                         vector[m] = (double)((int)supplyRest.get(Integer.toString(m)));
                         demand = demand - (int) supplyRest.get(Integer.toString(m));
-                        //supplyRest.put(Integer.toString(m), 0);
                     }
                 } else {
                     if ((einheitenAngebot - demand) > 0) {
-                        //supplyRest.put(Integer.toString(m), (einheitenAngebot - demand));
                         vector[m] = (double)demand;
                         demand = 0;
                     } else {
                         vector[m] = (double)einheitenAngebot;
-                        //supplyRest.put(Integer.toString(m), 0);
                         demand = demand - einheitenAngebot;
                     }
                 }
@@ -74,12 +70,12 @@ public class BFBehaviour extends Behaviour {
     }
 
 
-    public boolean matching(int quality, int edges, int demand, HashMap<String, Object> supplyRest, int m, int constraint, double dist) {
+    public boolean matching(int quality, HashMap<String, Object> supplyRest, int m, int constraint, double dist) {
 
         HashMap<String, Object> angebot = new HashMap();
         angebot = (HashMap) Blackboard.get(Integer.toString(m));
         if (Math.abs(quality - (int) angebot.get("quality")) <= 2) { //bedeutet, erstmal grundsätzlich wählbar unabhängig von constraints
-            boolean notMatching = checkConstraints(quality, edges, demand, supplyRest, m, constraint, dist);
+            boolean notMatching = checkConstraints(quality, supplyRest, m, constraint, dist);
             if (notMatching) {
                 return false;
             }
@@ -94,10 +90,8 @@ public class BFBehaviour extends Behaviour {
         return false;
     }
 
-    public boolean checkConstraints(int quality, int edges, int demand, HashMap<String, Object> supplyRest, int rn, int constraint, double dist) {
+    public boolean checkConstraints(int quality, HashMap<String, Object> supplyRest, int rn, int constraint, double dist) {
         boolean notMatching = false;
-        int sRest;
-        double dRest;
         HashMap<String, Object> angebot = new HashMap();
         angebot = (HashMap)Blackboard.get(Integer.toString(rn));
         switch(constraint) {

@@ -46,22 +46,15 @@ public class ESAlgorithm {
                 mut_population.add(gp.mutate(co_population.get(i)));
             }
 
-            //re-add parents for elitist strategy
-            //for (State s: population) {
-            //    mut_population.add(s);
-            //}
+            //re-add parents for elitist strategy ; --> in this case only best parent solution
             if (best != null) mut_population.add(best);
 
             //evaluate
-            //double fitness_sum = 0;
             double bestFitness = Double.MAX_VALUE;
-            //double worstFitness = 0;
-
             ArrayList<Pair<EvolutionaryState, Double>> populationFitness = new ArrayList<>();
             for (EvolutionaryState es : mut_population) {
 
                 //prüfen ob zu viele einheiten verteilt
-                //EvolutionaryState es = (EvolutionaryState) p;
                 double count = 0;
                 for (int i = 0; i < dim*3; i++) {
                     count += es.vector[i];
@@ -74,16 +67,11 @@ public class ESAlgorithm {
 
                 double fitness = gp.fitness(es);
                 populationFitness.add(new Pair<>(es, fitness));
-                //fitness_sum += fitness;
-                //if(fitness > worstFitness) worstFitness = fitness;
                 if(fitness < bestFitness) {
                     bestFitness = fitness;
                     best = es;
                 }
             }
-            //double avgFitness = fitness_sum / population.size();
-            //System.out.println("Best Fitness generation " + k + ":  " + bestFitness);
-
 
             //Sortieren der Fitness-Liste
             Collections.sort(populationFitness, new Comparator<Pair<EvolutionaryState, Double>>() {
@@ -125,7 +113,6 @@ public class ESAlgorithm {
         }
 
         finalState = bestState;
-        //System.out.println("[GA] Final State Reached !");
     }
 
 

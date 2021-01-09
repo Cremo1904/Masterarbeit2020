@@ -60,20 +60,13 @@ public class SAAlgorithm {
             double tval = 10000;
             double p = 0;
             if (quantity <= (double)prob.getDemand()) {
-                //    for (int i = 0; i < vector.length; i++) {
-                //        vector[i] = Math.round(vector[i] * 0.5);
-                //    }
-                //}
-
                 tval = op.eval(psa.getKey());
                 p = acceptanceProbability(curval, tval, temp, maximize);
             }
             double d = rnd.nextDouble();
-            //System.out.println(p + " ! " + d);
             if(p > d){
                 currentState = psa.getKey();
                 solution.add(psa.getValue());
-                //System.out.println("[SA] Eval : " + tval + "  Count: " + count + "   Temp: " + temp);
                 result = tval;
             }
 
