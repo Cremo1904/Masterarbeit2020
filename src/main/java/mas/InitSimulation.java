@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
-public class RunSimulation {
+public class InitSimulation {
 
     public static void main(String[] args) {
 

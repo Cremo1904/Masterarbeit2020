@@ -3,7 +3,7 @@ package mas;
 import abc.ABCBehaviour;
 import es.ESBehaviour;
 import pso.PSOBehaviour;
-import rs.BFBehaviour;
+import rs.RSBehaviour;
 import sa.SABehaviour;
 
 import java.util.*;
@@ -76,23 +76,23 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
         }
         switch(algo) {
             case 1:
-                BFBehaviour bfbehaviour = new BFBehaviour();
-                vector = bfbehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
+                RSBehaviour rsbehaviour = new RSBehaviour(1);
+                vector = rsbehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 2:
-                PSOBehaviour psobehaviour = new PSOBehaviour();
+                PSOBehaviour psobehaviour = new PSOBehaviour(2);
                 vector = psobehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 3:
-                SABehaviour saBehaviour = new SABehaviour();
+                SABehaviour saBehaviour = new SABehaviour(3);
                 vector = saBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 4:
-                ESBehaviour esBehaviour = new ESBehaviour();
+                ESBehaviour esBehaviour = new ESBehaviour(4);
                 vector = esBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 5:
-                ABCBehaviour abcBehaviour = new ABCBehaviour();
+                ABCBehaviour abcBehaviour = new ABCBehaviour(5);
                 vector = abcBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
         }

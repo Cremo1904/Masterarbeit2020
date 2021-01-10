@@ -8,6 +8,11 @@ import java.util.HashMap;
 
 public class SABehaviour extends Behaviour {
 
+    public SABehaviour (int id) {
+        super(id);
+    }
+
+    @Override
     public double[] generateSolution(int demand, int quality, HashMap<String, Object> supplyRest, int dim, int constraint, double[] distances) {
         double[] vector = new double[dim*3];
 

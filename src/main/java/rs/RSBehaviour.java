@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class BFBehaviour extends Behaviour {
+public class RSBehaviour extends Behaviour {
 
-    public BFBehaviour() {
-
+    public RSBehaviour (int id) {
+        super(id);
     }
 
+    @Override
     public double[] generateSolution(int demand, int quality, HashMap<String, Object> supplyRest, int dim, int constraint, double[] distances) {
         double[] vector = new double[dim*3];
         int edges = 0;

@@ -9,7 +9,11 @@ import java.util.HashMap;
 
 public class PSOBehaviour extends Behaviour {
 
+    public PSOBehaviour (int id) {
+        super(id);
+    }
 
+    @Override
     public double[] generateSolution(int demand, int quality, HashMap<String, Object> supplyRest, int dim, int constraint, double[] distances) {
 
 
