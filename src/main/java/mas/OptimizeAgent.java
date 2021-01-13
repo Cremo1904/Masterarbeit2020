@@ -15,22 +15,18 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
     private int quality;
     private int quantity;
     private int constraint;
-    private double lon;
-    private double lat;
     private int algo;
     private double[] distances;
     private long counter = 0;
     private long positive = 0;
 
 
-    public OptimizeAgent(String id, int index, int dim, int quality, int quantity, double lon, double lat, int constraint, int algo, double[] distances) {
+    public OptimizeAgent(String id, int index, int dim, int quality, int quantity, int constraint, int algo, double[] distances) {
         super(id);
         this.dim=dim;
         this.index=index;
         this.quality=quality;
         this.quantity=quantity;
-        this.lon=lon;
-        this.lat=lat;
         this.constraint=constraint;
         this.algo = algo;
         this.distances = distances;
@@ -162,8 +158,9 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
         double tv_local;
         double edgecostDist;
         double edgecostQuality;
-
+        double global = (double)Blackboard.get("global");
         int i = 0;
+        double demand_sum = 0;
         for (String aid : keys) {
             demand demandSpec = (demand)demandInput.get(aid);
             demand = demandSpec.getQuantity();
@@ -185,14 +182,12 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
                 edgecostDist = edgecostDist + (double)quantity * dist;
                 edgecostQuality = edgecostQuality + (double)quantity * delta;
             }
-            tv_local = 0.47 * (edgecostDist / (140000 * demand)) + 0.03 * (edgecostQuality / demand) + 0.5 * (rest/demand);
-            //if (getId().equals(aid)) {
-            //    System.out.println("obj_local: " + tv_local);
-            //}
+            tv_local = 0.47 * (edgecostDist / (140000 * global)) + 0.03 * (edgecostQuality / global); // + 0.5 * (rest/global);
             tv = tv + tv_local;
+            demand_sum += (demand-rest);
             i++;
         }
-        tv = tv + ((dim-i) * 0.5);
+        tv = tv + 0.5 * ((global - demand_sum)/global);
         return tv;
     }
 

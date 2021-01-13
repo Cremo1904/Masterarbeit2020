@@ -11,8 +11,8 @@ public class GenerateData {
     public static void main(String[] args) {
 
         // Generating Data
-        /*
-        int n = 150;
+
+        int n = 30;
         int count8 = 0;
         int count7 = 0;
         int count6 = 0;
@@ -23,7 +23,7 @@ public class GenerateData {
         int count1 = 0;
 
         try {
-            FileWriter fw = new FileWriter("Angebote_150C");
+            FileWriter fw = new FileWriter("");
             BufferedWriter bw = new BufferedWriter(fw);
 
             int q = 1;
@@ -54,6 +54,9 @@ public class GenerateData {
 
                 bw.write(Math.round(99 * rng.nextDouble() + 1) + "\n");
                 double constraint = rng.nextDouble();
+
+                /*
+                //c1
                 if (constraint >= 0.7) {
                     bw.write(8 + "\n");
                     count8++;
@@ -79,6 +82,27 @@ public class GenerateData {
                     bw.write(1 + "\n");
                     count1++;
                 }
+
+                 */
+
+
+                //c2
+                if (constraint >= 0.8) {
+                    bw.write(7 + "\n");
+                    count7++;
+                } else if(constraint >= 0.6) {
+                    bw.write(6 + "\n");
+                    count6++;
+                } else if(constraint >= 0.4) {
+                    bw.write(5 + "\n");
+                    count5++;
+                } else if(constraint >= 0.2) {
+                    bw.write(4 + "\n");
+                    count4++;
+                } else {
+                    bw.write(8 + "\n");
+                    count8++;
+                }
             }
 
             bw.close();
@@ -88,12 +112,17 @@ public class GenerateData {
 
         }
 
-         */
+
+
+
+
+
 
 
         //Sorting Data
+        /*
         try {
-            FileReader fr = new FileReader("Nachfragen_50C");
+            FileReader fr = new FileReader("Nachfragen_large_c2u");
             BufferedReader br = new BufferedReader(fr);
             HashMap<Integer, Object> c1 = new HashMap();
             HashMap<Integer, Object> c2 = new HashMap();
@@ -105,7 +134,7 @@ public class GenerateData {
             HashMap<Integer, Object> c8 = new HashMap();
 
 
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 250; i++) {                      //hier größe des datensatzes eingeben
                 double[] array = new double[6];
                 array[0] = Double.parseDouble(br.readLine());
                 array[1] = Double.parseDouble(br.readLine());
@@ -149,7 +178,7 @@ public class GenerateData {
                         break;
                 }
             }
-            FileWriter fw = new FileWriter("Nachfragen_50CS");
+            FileWriter fw = new FileWriter("Nachfragen_large_c2t");
             BufferedWriter bw = new BufferedWriter(fw);
 
             double[] myDemand;
@@ -231,7 +260,7 @@ public class GenerateData {
         } catch (IOException e) {
 
         }
-
+        */
 
 
     }

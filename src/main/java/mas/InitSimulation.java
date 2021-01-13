@@ -1,7 +1,12 @@
 package mas;
 
+import com.graphhopper.GHRequest;
+import com.graphhopper.GHResponse;
+import com.graphhopper.ResponsePath;
+
 import java.io.*;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -9,7 +14,7 @@ public class InitSimulation {
 
     public static void main(String[] args) {
 
-        int m=10;
+        int m=250;
         int quality;
         int quantity;
         int index;
@@ -24,16 +29,16 @@ public class InitSimulation {
         double gesamtNachfrage = 0.0;
 
         try {
-            FileReader fr = new FileReader("Nachfragen_10CS");
+            FileReader fr = new FileReader("Nachfragen_large_c2");
             BufferedReader br = new BufferedReader(fr);
 
-            FileReader fr2 = new FileReader("Angebote_30");
+            FileReader fr2 = new FileReader("Angebote_large_c2");
             BufferedReader br2 = new BufferedReader(fr2);
 
-            FileReader fr3= new FileReader("Distances_10S");
+            FileReader fr3= new FileReader("Distances_large_c2");
             BufferedReader br3 = new BufferedReader(fr3);
 
-            //FileWriter fw = new FileWriter("Distances_100S");
+            //FileWriter fw = new FileWriter("Distances_small_c2");
             //BufferedWriter bw = new BufferedWriter(fw);
 
             for (int i = 0; i < (m*3); i++) {
@@ -68,6 +73,7 @@ public class InitSimulation {
                 HashMap<String, Object> angebot = new HashMap();
                 for (int j = 0; j < m*3; j++) {
                     //angebot = (HashMap) Blackboard.get(Integer.toString(j));
+                    //System.out.println(angebot.get("lat") + ", " + angebot.get("lon"));
                     //GHRequest request = new GHRequest(lat, lon, (double)angebot.get("lat"), (double)angebot.get("lon"));
                     //request.putHint("calcPoints", false);
                     //request.putHint("instructions", false);
@@ -81,7 +87,7 @@ public class InitSimulation {
                     //bw.write(distances[j] + "\n");
                 }
 
-                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, lon, lat, constraint, 5, distances);
+                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, constraint, 2, distances);
                 mas.add(agents[i]);
             }
 
@@ -105,7 +111,7 @@ public class InitSimulation {
         double sumSum = 0.0;
         long time = 0;
         long time2 = 0;
-
+        Blackboard.put("global", gesamtNachfrage);
         for (int j = 0; j < 1; j++) {
             try {
                 FileWriter fw = new FileWriter("ausgabe.dat");
