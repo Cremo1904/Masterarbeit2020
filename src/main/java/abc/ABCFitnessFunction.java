@@ -11,6 +11,7 @@ public class ABCFitnessFunction {
     HashMap<String, Object> supplyRest;
     int constraint;
     double[] distances;
+    double calls = 0;
 
     public ABCFitnessFunction(int quality, int quantity, int dim, HashMap<String, Object> supplyRest, int constraint, double[] distances) {
 
@@ -23,7 +24,7 @@ public class ABCFitnessFunction {
     }
 
     public double eval(double[] position) {
-
+        this.calls++;
         double count = 0;
         double obj = 0;
         int aQuality;
@@ -75,5 +76,9 @@ public class ABCFitnessFunction {
         } else {
             return true;
         }
+    }
+
+    public double getCalls() {
+        return this.calls;
     }
 }

@@ -19,6 +19,7 @@ public class PSOFitnessFunction extends FitnessFunction {
     HashMap<String, Object> supplyRest;
     int constraint;
     double[] distances;
+    double calls = 0.0;
 
     //-------------------------------------------------------------------------
     // Methods
@@ -41,6 +42,7 @@ public class PSOFitnessFunction extends FitnessFunction {
      * @return Fitness function for a particle
      */
     public double evaluate(double position[]) {
+        this.calls++;
         double count = 0;
         double obj = 0;
         int aQuality;
@@ -92,6 +94,10 @@ public class PSOFitnessFunction extends FitnessFunction {
         } else {
             return true;
         }
+    }
+
+    public double getCalls() {
+        return this.calls;
     }
 
 }

@@ -117,7 +117,6 @@ public class SABehaviour extends Behaviour {
          */
 
         if (atLeastOne) {
-            SAProblem f = new SAProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
             boolean notASolution = true;
             while (notASolution) {
                 SAProblem prob = new SAProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
@@ -127,8 +126,11 @@ public class SABehaviour extends Behaviour {
 
                 vector = SA.finalState.getVector();
 
-                if (f.checkSolution(vector)) {
+                if (prob.checkSolution(vector)) {
                     notASolution = false;
+                    double calls = (double) Blackboard.get("calls");
+                    calls += prob.getCalls();
+                    Blackboard.put("calls", calls);
                 }
 
             }

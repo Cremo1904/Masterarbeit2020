@@ -17,6 +17,7 @@ public class SAProblem implements OptimizationProblem {
     int constraint;
     HashMap<String, Object> supplyRest;
     int[] validSupplies;
+    double calls = 0;
 
     public SAProblem(int n, int d, double[] distances, int quality, int constraint, HashMap<String, Object> supplyRest, int[] validSupplies){
         this.dimensions = n;
@@ -112,7 +113,7 @@ public class SAProblem implements OptimizationProblem {
 
     @Override
     public double eval(State s) {
-
+        this.calls++;
         double count = 0;
         double obj = 0;
         int aQuality;
@@ -168,6 +169,9 @@ public class SAProblem implements OptimizationProblem {
         }
     }
 
+    public double getCalls() {
+        return this.calls;
+    }
 
 }
 

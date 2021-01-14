@@ -74,6 +74,9 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
             case 1:
                 RSBehaviour rsbehaviour = new RSBehaviour(1);
                 vector = rsbehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
+                double calls = (double) Blackboard.get("calls");
+                calls += 1;
+                Blackboard.put("calls", calls);
                 break;
             case 2:
                 PSOBehaviour psobehaviour = new PSOBehaviour(2);
@@ -157,6 +160,7 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
         double tv = 0.0;
         double tv_local;
         double edgecostDist;
+        double edgecostDistSum = 0;
         double edgecostQuality;
         double global = (double)Blackboard.get("global");
         int i = 0;
@@ -185,9 +189,11 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
             tv_local = 0.47 * (edgecostDist / (140000 * global)) + 0.03 * (edgecostQuality / global); // + 0.5 * (rest/global);
             tv = tv + tv_local;
             demand_sum += (demand-rest);
+            edgecostDistSum += edgecostDist;
             i++;
         }
         tv = tv + 0.5 * ((global - demand_sum)/global);
+        Blackboard.put("Einheitenkilometer", (edgecostDistSum/(demand_sum))/1000);
         return tv;
     }
 
@@ -198,6 +204,10 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
 
     public HashMap getMyDemand() {
         return kappa.getMyDemand();
+    }
+
+    public HashMap getMyEdges() {
+        return kappa.getMyEdges();
     }
 
     public int getLambda() {

@@ -87,16 +87,19 @@ public class ABCBehaviour extends Behaviour {
         if (atLeastOne) {
 
 
-            ABCFitnessFunction abcFitFunc = new ABCFitnessFunction(quality, demand, dim, supplyRest, constraint, distances);
+
             boolean notASolution = true;
             while (notASolution) {
-
+                ABCFitnessFunction abcFitFunc = new ABCFitnessFunction(quality, demand, dim, supplyRest, constraint, distances);
                 ABCAlgorithm abc = new ABCAlgorithm(dim, demand, validSupplies, 200 , 200 , 100, abcFitFunc );
                 abc.algorithm();
                 vector = abc.bestFoodSource.getVector();
 
                 if (abcFitFunc.checkSolution(vector)) {
                     notASolution = false;
+                    double calls = (double)Blackboard.get("calls");
+                    calls += abcFitFunc.getCalls();
+                    Blackboard.put("calls", calls);
                 }
             }
 

@@ -17,6 +17,7 @@ public class ESProblem implements GeneticProblem {
     int constraint;
     HashMap<String, Object> supplyRest;
     int[] validSupplies;
+    double calls = 0;
 
     public ESProblem(int n, int d, double[] distances, int quality, int constraint, HashMap<String, Object> supplyRest, int[] validSupplies){
         this.dimensions = n;
@@ -43,7 +44,7 @@ public class ESProblem implements GeneticProblem {
 
     @Override
     public double fitness(EvolutionaryState mes) {
-
+        this.calls++;
         double count = 0;
         double obj = 0;
         int aQuality;
@@ -151,6 +152,10 @@ public class ESProblem implements GeneticProblem {
             mes.vector[mindex2] = 0;
         }
         return mes;
+    }
+
+    public double getCalls() {
+        return this.calls;
     }
 
 }

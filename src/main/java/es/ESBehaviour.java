@@ -83,7 +83,6 @@ public class ESBehaviour extends Behaviour {
 
 
         if (atLeastOne) {
-            ESProblem f = new ESProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
             boolean notASolution = true;
             while (notASolution) {
                 ESProblem ESP = new ESProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
@@ -92,8 +91,11 @@ public class ESBehaviour extends Behaviour {
 
                 vector = ESA.finalState.vector;
 
-                if (f.checkSolution(vector)) {
+                if (ESP.checkSolution(vector)) {
                     notASolution = false;
+                    double calls = (double) Blackboard.get("calls");
+                    calls += ESP.getCalls();
+                    Blackboard.put("calls", calls);
                 }
 
             }

@@ -21,6 +21,7 @@ public class PSOBehaviour extends Behaviour {
 
         double[] maxPositions = new double[dim*3];
         HashMap<String, Object> angebot = new HashMap();
+        boolean atLeastOne = false;
         for (int i = 0; i < dim*3; i++) {
             angebot = (HashMap) Blackboard.get(Integer.toString(i));
             int aQuality = (int) angebot.get("quality");                                        //genereller Ausschluss wenn Q-Delta > 2
@@ -71,6 +72,8 @@ public class PSOBehaviour extends Behaviour {
                     continue;
                 }
             }
+            atLeastOne = true;
+
 
             if (supplyRest.containsKey(Integer.toString(i))) {
                 maxPositions[i] = (int) supplyRest.get(Integer.toString(i));
@@ -81,40 +84,44 @@ public class PSOBehaviour extends Behaviour {
 
 
 
-        PSOFitnessFunction f = new PSOFitnessFunction(quality, demand, dim, supplyRest, constraint, distances);
-        boolean notASolution = true;
-        while (notASolution) {
-            // Create a swarm (using 'MyParticle' as sample particle and 'MyFitnessFunction' as fitness function)
-            PSOParticle.DIMENSION = dim*3;
-            Swarm swarm = new Swarm(25, new PSOParticle(), new PSOFitnessFunction(quality, demand, dim, supplyRest, constraint, distances));
+        if (atLeastOne) {
+            boolean notASolution = true;
+            while (notASolution) {
+                // Create a swarm (using 'MyParticle' as sample particle and 'MyFitnessFunction' as fitness function)
+                PSOParticle.DIMENSION = dim * 3;
+                PSOFitnessFunction f = new PSOFitnessFunction(quality, demand, dim, supplyRest, constraint, distances);
+                Swarm swarm = new Swarm(25, new PSOParticle(), f);
 
-            // Use neighborhood
-            Neighborhood neigh = new Neighborhood1D(25 / 5, true);
-            swarm.setNeighborhood(neigh);
-            swarm.setNeighborhoodIncrement(0.9);
+                // Use neighborhood
+                Neighborhood neigh = new Neighborhood1D(25 / 5, true);
+                swarm.setNeighborhood(neigh);
+                swarm.setNeighborhoodIncrement(0.9);
 
-            // Set position (and velocity) constraints. I.e.: where to look for solutions
-            swarm.setInertia(0.95);
-            swarm.setMaxPosition(maxPositions);
-            swarm.setMinPosition(0);
-            swarm.setMaxMinVelocity(0.2 * demand);
-            swarm.setParticleUpdate(new PSOParticleUpdate(swarm.getSampleParticle(), demand));
+                // Set position (and velocity) constraints. I.e.: where to look for solutions
+                swarm.setInertia(0.95);
+                swarm.setMaxPosition(maxPositions);
+                swarm.setMinPosition(0);
+                swarm.setMaxMinVelocity(0.2 * demand);
+                swarm.setParticleUpdate(new PSOParticleUpdate(swarm.getSampleParticle(), demand));
 
-            int numberOfIterations = 100;
+                int numberOfIterations = 100;
 
-            for (int i = 0; i < numberOfIterations; i++) {
-                swarm.evolve();
-            }
-            vector = swarm.getBestPosition();
+                for (int i = 0; i < numberOfIterations; i++) {
+                    swarm.evolve();
+                }
+                vector = swarm.getBestPosition();
 
-            if (f.checkSolution(vector)) {
-                notASolution = false;
-                System.out.println("Gefundene zulässige Lösung: " + swarm.getBestFitness());
-            } else {
-                System.out.println("Gefundene unzulässige Lösung: " + swarm.getBestFitness());
+                if (f.checkSolution(vector)) {
+                    notASolution = false;
+                    System.out.println("Gefundene zulässige Lösung: " + swarm.getBestFitness());
+                    double calls = (double) Blackboard.get("calls");
+                    calls += f.getCalls();
+                    Blackboard.put("calls", calls);
+                } else {
+                    System.out.println("Gefundene unzulässige Lösung: " + swarm.getBestFitness());
+                }
             }
         }
-
         return vector;
     }
 
