@@ -16,11 +16,13 @@ public class ESBehaviour extends Behaviour {
         double[] vector = new double[dim*3];
 
         int[] validSupplies = new int[dim*3];
+        int[] qualities = new int[dim*3];
         HashMap<String, Object> angebot = new HashMap();
         boolean atLeastOne = false;
         for (int i = 0; i < dim*3; i++) {
             angebot = (HashMap) Blackboard.get(Integer.toString(i));
             int aQuality = (int) angebot.get("quality");                                        //genereller Ausschluss wenn Q-Delta > 2
+            qualities[i] = aQuality;
             int aQuantity = (int) angebot.get("quantity");
             if (Math.abs(aQuality - quality) > 2){
                 validSupplies[i] = -1;
@@ -71,21 +73,23 @@ public class ESBehaviour extends Behaviour {
                 }
             }
 
-            atLeastOne = true;
-
             if (supplyRest.containsKey(Integer.toString(i))) {
                 validSupplies[i] = (int) supplyRest.get(Integer.toString(i));
+                if (validSupplies[i] == 0) {
+                    validSupplies[i] = -1;
+                    continue;
+                }
             } else {
                 validSupplies[i] = aQuantity;
             }
-
+            atLeastOne = true;
         }
 
 
         if (atLeastOne) {
             boolean notASolution = true;
             while (notASolution) {
-                ESProblem ESP = new ESProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
+                ESProblem ESP = new ESProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies, qualities);
                 ESAlgorithm ESA = new ESAlgorithm(25, dim, demand);
                 ESA.solve(ESP, 5000);
 

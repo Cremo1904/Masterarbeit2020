@@ -73,13 +73,17 @@ public class ABCBehaviour extends Behaviour {
                 }
             }
 
-            atLeastOne = true;
 
             if (supplyRest.containsKey(Integer.toString(i))) {
                 validSupplies[i] = (int) supplyRest.get(Integer.toString(i));
+                if (validSupplies[i] == 0) {
+                    validSupplies[i] = -1;
+                    continue;
+                }
             } else {
                 validSupplies[i] = aQuantity;
             }
+            atLeastOne = true;
 
         }
 

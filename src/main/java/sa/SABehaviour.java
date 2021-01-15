@@ -19,10 +19,12 @@ public class SABehaviour extends Behaviour {
 
         int[] validSupplies = new int[dim*3];
         HashMap<String, Object> angebot = new HashMap();
+        int[] qualities = new int[dim*3];
         boolean atLeastOne = false;
         for (int i = 0; i < dim*3; i++) {
             angebot = (HashMap) Blackboard.get(Integer.toString(i));
             int aQuality = (int) angebot.get("quality");                                        //genereller Ausschluss wenn Q-Delta > 2
+            qualities[i] = aQuality;
             int aQuantity = (int) angebot.get("quantity");
             if (Math.abs(aQuality - quality) > 2){
                 validSupplies[i] = -1;
@@ -73,53 +75,23 @@ public class SABehaviour extends Behaviour {
                 }
             }
 
-            atLeastOne = true;
-
             if (supplyRest.containsKey(Integer.toString(i))) {
                 validSupplies[i] = (int) supplyRest.get(Integer.toString(i));
-            } else {
-                validSupplies[i] = aQuantity;
-            }
-
-        }
-
-
-
-        /*
-        int[] validSupplies = new int[dim*3];
-        HashMap<String, Object> angebot = new HashMap();
-        for (int i = 0; i < dim*3; i++) {
-            angebot = (HashMap) Blackboard.get(Integer.toString(i));
-            int aQuality = (int) angebot.get("quality");
-            if (Math.abs(aQuality - quality) > 2){
-                validSupplies[i] = -1;
-                continue;
-            }
-            if (constraint == 3 || constraint == 5 || constraint == 6 || constraint == 7) {
-                if (aQuality != quality) {
+                if (validSupplies[i] == 0) {
                     validSupplies[i] = -1;
                     continue;
                 }
+            } else {
+                validSupplies[i] = aQuantity;
             }
-            int aConstraint = (int) angebot.get("constraint");
-            if (aConstraint == 1 || aConstraint == 4 || aConstraint == 5 || aConstraint == 7) {
-                if (supplyRest.containsKey(Integer.toString(i))) {
-                    int aQuantity = (int) supplyRest.get(Integer.toString(i));
-                    if (aQuantity != (int) angebot.get("quantity")) {
-                        validSupplies[i] = -1;
-                        continue;
-                    }
-                }
-            }
-            validSupplies[i] = i;
+            atLeastOne = true;
         }
 
-         */
 
         if (atLeastOne) {
             boolean notASolution = true;
             while (notASolution) {
-                SAProblem prob = new SAProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies);
+                SAProblem prob = new SAProblem(dim, demand, distances, quality, constraint, supplyRest, validSupplies, qualities);
                 SAAlgorithm SA = new SAAlgorithm(0.0003);
                 SA.solve(prob, SimulatedAnnealingStrategy.EXPOTENTIAL, false);
 

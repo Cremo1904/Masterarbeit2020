@@ -18,8 +18,9 @@ public class ESProblem implements GeneticProblem {
     HashMap<String, Object> supplyRest;
     int[] validSupplies;
     double calls = 0;
+    int[] qualities;
 
-    public ESProblem(int n, int d, double[] distances, int quality, int constraint, HashMap<String, Object> supplyRest, int[] validSupplies){
+    public ESProblem(int n, int d, double[] distances, int quality, int constraint, HashMap<String, Object> supplyRest, int[] validSupplies, int[] qualities){
         this.dimensions = n;
         this.demand = d;
         this.distances = distances;
@@ -27,6 +28,7 @@ public class ESProblem implements GeneticProblem {
         this.constraint = constraint;
         this.supplyRest = supplyRest;
         this.validSupplies = validSupplies;
+        this.qualities = qualities;
     }
 
     @Override
@@ -45,24 +47,28 @@ public class ESProblem implements GeneticProblem {
     @Override
     public double fitness(EvolutionaryState mes) {
         this.calls++;
-        double count = 0;
+        //double count = 0;
         double obj = 0;
         int aQuality;
         double[] position = mes.vector;
-        HashMap<String, Object> angebot = new HashMap();
+        //HashMap<String, Object> angebot = new HashMap();
+        /*
         for (int i = 0; i < this.dimensions*3; i++) {
             count += position[i];
         }
         if (count > (double)this.demand) {                 //hohe Strafkosten für jede Einheit über Quantity
             obj = count;
         } else {                                        //hier eigentliche Berechnung der Fitness
+
+         */
             double distCost = 0;
             double qualCost = 0;
             double amount = 0;
             for (int i = 0; i < this.dimensions*3; i++) {
                 if (position[i] > 0) {
-                    angebot = (HashMap) Blackboard.get(Integer.toString(i));
-                    aQuality = (int) angebot.get("quality");
+                    //angebot = (HashMap) Blackboard.get(Integer.toString(i));
+                    //aQuality = (int) angebot.get("quality");
+                    aQuality = this.qualities[i];
                     double dist = this.distances[i];
                     double delta = Math.abs(this.quality - aQuality);
                     if (delta == 0) {
@@ -77,12 +83,16 @@ public class ESProblem implements GeneticProblem {
                     amount += position[i];
                 }
             }
-            if (amount > 0) {
-                obj += 0.47 * (distCost / (140000 * this.demand)) + 0.03 * (qualCost / this.demand) + 0.5 * ((this.demand - amount) / this.demand);
+            if (amount > (double)this.demand) {
+                obj = amount;
             } else {
-                obj += 0.5;
+                if (amount > 0) {
+                    obj += 0.47 * (distCost / (140000 * this.demand)) + 0.03 * (qualCost / this.demand) + 0.5 * ((this.demand - amount) / this.demand);
+                } else {
+                    obj += 0.5;
+                }
             }
-        }
+        //}
         return obj;
 
     }

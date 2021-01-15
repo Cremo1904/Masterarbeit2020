@@ -14,7 +14,7 @@ public class InitSimulation {
 
     public static void main(String[] args) {
 
-        int m=10;
+        int m=250;
         int quality;
         int quantity;
         int index;
@@ -29,13 +29,13 @@ public class InitSimulation {
         double gesamtNachfrage = 0.0;
 
         try {
-            FileReader fr = new FileReader("Nachfragen_small_c1");
+            FileReader fr = new FileReader("Nachfragen_large_c1");
             BufferedReader br = new BufferedReader(fr);
 
-            FileReader fr2 = new FileReader("Angebote_small_c1");
+            FileReader fr2 = new FileReader("Angebote_large_c1");
             BufferedReader br2 = new BufferedReader(fr2);
 
-            FileReader fr3= new FileReader("Distances_small_c1");
+            FileReader fr3= new FileReader("Distances_large_c1");
             BufferedReader br3 = new BufferedReader(fr3);
 
             //FileWriter fw = new FileWriter("Distances_small_c2");
@@ -87,7 +87,7 @@ public class InitSimulation {
                     //bw.write(distances[j] + "\n");
                 }
 
-                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, constraint, 1, distances);
+                agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, constraint, 2, distances);
                 mas.add(agents[i]);
             }
 
@@ -105,7 +105,7 @@ public class InitSimulation {
 
         }
 
-        double rep = 2.0;                                                                       //hier anzahl wiederholungen eingeben
+        double rep = 1.0;                                                                       //hier anzahl wiederholungen eingeben
         double best = 100.0;
         double worst = 0.0;
         //double summe = 0;

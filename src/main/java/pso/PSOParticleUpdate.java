@@ -78,7 +78,7 @@ public class PSOParticleUpdate extends ParticleUpdate {
         }
         if (count > demand) {
             for (int i = 0; i < position.length; i++) {
-                position[i] = Math.round(position[i] * 0.5);
+                position[i] = Math.round(position[i] * 0.49);
             }
         } else {
             for (int i = 0; i < position.length; i++) {

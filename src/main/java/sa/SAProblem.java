@@ -18,8 +18,9 @@ public class SAProblem implements OptimizationProblem {
     HashMap<String, Object> supplyRest;
     int[] validSupplies;
     double calls = 0;
+    int[] qualities;
 
-    public SAProblem(int n, int d, double[] distances, int quality, int constraint, HashMap<String, Object> supplyRest, int[] validSupplies){
+    public SAProblem(int n, int d, double[] distances, int quality, int constraint, HashMap<String, Object> supplyRest, int[] validSupplies, int[] qualities){
         this.dimensions = n;
         this.demand = d;
         this.distances = distances;
@@ -27,6 +28,7 @@ public class SAProblem implements OptimizationProblem {
         this.constraint = constraint;
         this.supplyRest = supplyRest;
         this.validSupplies = validSupplies;
+        this.qualities = qualities;
     }
 
     public int getDemand() {
@@ -116,10 +118,10 @@ public class SAProblem implements OptimizationProblem {
         this.calls++;
         double count = 0;
         double obj = 0;
-        int aQuality;
+        //int aQuality;
         SAState sas = (SAState)s;
         double[] position = sas.getVector();
-        HashMap<String, Object> angebot = new HashMap();
+        //HashMap<String, Object> angebot = new HashMap();
         for (int i = 0; i < this.dimensions*3; i++) {
             count += position[i];
         }
@@ -131,10 +133,10 @@ public class SAProblem implements OptimizationProblem {
             double amount = 0;
             for (int i = 0; i < this.dimensions*3; i++) {
                 if (position[i] > 0) {
-                    angebot = (HashMap) Blackboard.get(Integer.toString(i));
-                    aQuality = (int) angebot.get("quality");
+                    //angebot = (HashMap) Blackboard.get(Integer.toString(i));
+                    //aQuality = (int) angebot.get("quality");
                     double dist = this.distances[i];
-                    double delta = Math.abs(this.quality - aQuality);
+                    double delta = Math.abs(this.quality - this.qualities[i]);
                     if (delta == 0) {
                         delta = 0.0;
                     } else if (delta == 1) {

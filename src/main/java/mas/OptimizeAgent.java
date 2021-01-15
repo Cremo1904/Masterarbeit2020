@@ -19,6 +19,7 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
     private double[] distances;
     private long counter = 0;
     private long positive = 0;
+    private int limit = 0;
 
 
     public OptimizeAgent(String id, int index, int dim, int quality, int quantity, int constraint, int algo, double[] distances) {
@@ -33,6 +34,7 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
     }
 
     public void init() {
+        this.limit = 0;
         double tv = 0.5 * dim;
         createKappa(tv);
     }
@@ -40,6 +42,10 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
 
     @Override
     protected WorkingMemory decide() {
+
+        if (algo != 1 && limit == 3) {
+            return kappa;
+        }
 
         WorkingMemory kappa2 = kappa.copy();
         double targetValue = kappa2.getTargetValue();
@@ -139,6 +145,9 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
             kappa2.setContribution(contribution);
             positive++;
             success = true;
+            limit = 0;
+        } else {
+            limit += 1;
         }
 
         if (success) {
