@@ -29,13 +29,13 @@ public class InitSimulation {
         double gesamtNachfrage = 0.0;
 
         try {
-            FileReader fr = new FileReader("Nachfragen_large_c1");
+            FileReader fr = new FileReader("Nachfragen_large_c2");
             BufferedReader br = new BufferedReader(fr);
 
-            FileReader fr2 = new FileReader("Angebote_large_c1");
+            FileReader fr2 = new FileReader("Angebote_large_c2");
             BufferedReader br2 = new BufferedReader(fr2);
 
-            FileReader fr3= new FileReader("Distances_large_c1");
+            FileReader fr3= new FileReader("Distances_large_c2");
             BufferedReader br3 = new BufferedReader(fr3);
 
             //FileWriter fw = new FileWriter("Distances_small_c2");
@@ -119,6 +119,9 @@ public class InitSimulation {
         double unitKilometerAve = 0.0;
         double callsAve = 0.0;
         double ticSum = 0;
+        int decides = 0;
+        int successes = 0;
+        int edgeCount = 0;
         Blackboard.put("global", gesamtNachfrage);
         Blackboard.put("calls", 0.0);
         for (int j = 0; j < rep; j++) {
@@ -145,13 +148,13 @@ public class InitSimulation {
                 bw.newLine();
 
                 result = agents[0].getValue();
-                /*
-                summe = 0.0;
+
                 for (int i = 0; i < m; i++) {
-                    summe = summe + agents[i].getValue();
                     //System.out.println("Agent " + i + ": " + agents[i].getValue() + "  ; decide-Aufrufe: " + agents[i].getCounter() + "  ; erfolgreiche Schätzungen: " + agents[i].getPositive() + " ;  Lambda: " + agents[i].getLambda());
+                    decides += agents[i].getCounter();
+                    successes += agents[i].getPositive();
                 }
-                 */
+
 
                 System.out.println("Tics: " + mas.getRunden());
                 bw.write("# Tics: " + mas.getRunden());
@@ -168,7 +171,7 @@ public class InitSimulation {
                 Set<String> keys = output.keySet();
                 restNachfrage = gesamtNachfrage;
                 double befriedigteNachfragen = 0.0;
-                int edgeCount = 0;
+
                 for (String str : keys) {
                     //System.out.println("\nNachfrage " + str + ":");
                     bw.newLine();
@@ -201,6 +204,7 @@ public class InitSimulation {
             agents[0].objective(agents[0].getMyDemand(), agents[0].getMyEdges());
             unitKilometerAve += (double)Blackboard.get("Einheitenkilometer");
         }
+        double relativeSuccess = (double)successes / (double) decides;
         callsAve = (double)Blackboard.get("calls");
         System.out.println("Beste Ergebnis: " + best);
         System.out.println("Schlechtestes Ergebnis: " + worst);
@@ -211,7 +215,9 @@ public class InitSimulation {
         System.out.println("Average Runden: " + (ticSum-rep)/rep);
         System.out.println("Nachrichten pro Runde: " + ((double)mas.getMessageCount()/rep)/(ticSum/rep));
         System.out.println("Einheitenkilometer je befriedigte Einheit: " + unitKilometerAve/rep);
-        System.out.println("Objective Aufrufe / Agenten: " + (callsAve/m)/rep);
+        System.out.println("Objective Aufrufe je Agent: " + (callsAve/m)/rep);
+        System.out.println("Erfolgreiche Schätzungen: " + relativeSuccess*100 + "%   ; Anzahl: " + decides + "  ;   Erfolgreich: " + successes);
+        System.out.println("Average Kanten: " + edgeCount/rep);
         System.out.println("Average Zeit: " + timeSum/rep);
     }
 

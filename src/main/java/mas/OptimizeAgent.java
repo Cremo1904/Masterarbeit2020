@@ -43,10 +43,6 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
     @Override
     protected WorkingMemory decide() {
 
-        if (algo != 1 && limit == 3) {
-            return kappa;
-        }
-
         WorkingMemory kappa2 = kappa.copy();
         double targetValue = kappa2.getTargetValue();
         HashMap<String, Object> supplyRest = kappa2.getSupplyRest();
@@ -89,10 +85,16 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
                 vector = psobehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 3:
+                if (limit == 3) {
+                    return kappa;
+                }
                 SABehaviour saBehaviour = new SABehaviour(3);
                 vector = saBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
             case 4:
+                if (limit == 3) {
+                    return kappa;
+                }
                 ESBehaviour esBehaviour = new ESBehaviour(4);
                 vector = esBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
@@ -101,8 +103,6 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
                 vector = abcBehaviour.generateSolution(this.quantity, this.quality, supplyRest, dim, this.constraint, this.distances);
                 break;
         }
-
-
         for (int i = 0; i < dim*3; i++) {
             if (vector[i] > 0) {
                 int quantity = (int)vector[i];
@@ -133,7 +133,6 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
         }
         myDemand.put(getId(), demandSpec);
 
-
         boolean success = false;
         double tv = objective(myDemand, myEdges);
         if (targetValue > tv) {
@@ -141,7 +140,23 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
             kappa2.setSupplyRest(supplyRest);
             kappa2.setMyDemand(myDemand);
             kappa2.setMyEdges(myEdges);
-            contribution.put(Integer.toString(contribution.size()+1), getId());
+
+            if (!contribution.containsValue(getId())) {
+                contribution.put(Integer.toString(contribution.size() + 1), getId());
+            } else {
+                for (int i = 1; i <= contribution.size(); i++) {
+                    if (contribution.get(Integer.toString(i)) == getId()) {
+                        contribution.remove(Integer.toString(i));
+                        for (int j = i+1; j <= (contribution.size()+1); j++) {
+                            String temp = contribution.get(Integer.toString(j));
+                            contribution.remove(Integer.toString(j));
+                            contribution.put(Integer.toString(j-1), temp);
+                        }
+                        contribution.put(Integer.toString(contribution.size()+1), getId());
+                        break;
+                    }
+                }
+            }
             kappa2.setContribution(contribution);
             positive++;
             success = true;

@@ -12,8 +12,9 @@ public class ABCFitnessFunction {
     int constraint;
     double[] distances;
     double calls = 0;
+    int[] qualities;
 
-    public ABCFitnessFunction(int quality, int quantity, int dim, HashMap<String, Object> supplyRest, int constraint, double[] distances) {
+    public ABCFitnessFunction(int quality, int quantity, int dim, HashMap<String, Object> supplyRest, int constraint, double[] distances, int[] qualities) {
 
         this.quality = quality;
         this.quantity = quantity;
@@ -21,6 +22,7 @@ public class ABCFitnessFunction {
         this.supplyRest = supplyRest;
         this.constraint = constraint;
         this.distances = distances;
+        this.qualities = qualities;
     }
 
     public double eval(double[] position) {
@@ -28,20 +30,24 @@ public class ABCFitnessFunction {
         double count = 0;
         double obj = 0;
         int aQuality;
-        HashMap<String, Object> angebot = new HashMap();
+        //HashMap<String, Object> angebot = new HashMap();
+        /*
         for (int i = 0; i < this.dim * 3; i++) {
             count += position[i];
         }
         if (count > (double) this.quantity) {                 //hohe Strafkosten für jede Einheit über Quantity
             obj = count;
         } else {                                        //hier eigentliche Berechnung der Fitness
+
+         */
             double distCost = 0;
             double qualCost = 0;
             double amount = 0;
             for (int i = 0; i < this.dim * 3; i++) {
                 if (position[i] > 0) {
-                    angebot = (HashMap) Blackboard.get(Integer.toString(i));
-                    aQuality = (int) angebot.get("quality");
+                    //angebot = (HashMap) Blackboard.get(Integer.toString(i));
+                    //aQuality = (int) angebot.get("quality");
+                    aQuality = this.qualities[i];
                     double dist = this.distances[i];
                     double delta = Math.abs(this.quality - aQuality);
                     if (delta == 0) {
@@ -56,12 +62,16 @@ public class ABCFitnessFunction {
                     amount += position[i];
                 }
             }
-            if (amount > 0) {
-                obj += 0.47 * (distCost / (140000 * this.quantity)) + 0.03 * (qualCost / this.quantity) + 0.5 * ((this.quantity - amount) / this.quantity);
+            if (amount > (double)this.quantity) {
+                obj = amount;
             } else {
-                obj += 0.5;
+                if (amount > 0) {
+                    obj += 0.47 * (distCost / (140000 * this.quantity)) + 0.03 * (qualCost / this.quantity) + 0.5 * ((this.quantity - amount) / this.quantity);
+                } else {
+                    obj += 0.5;
+                }
             }
-        }
+        //}
         return obj;
 
     }

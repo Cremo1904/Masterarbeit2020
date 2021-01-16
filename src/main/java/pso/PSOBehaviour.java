@@ -20,11 +20,13 @@ public class PSOBehaviour extends Behaviour {
         double[] vector = new double[dim*3];
 
         double[] maxPositions = new double[dim*3];
+        int[] qualities = new int[dim*3];
         HashMap<String, Object> angebot = new HashMap();
         boolean atLeastOne = false;
         for (int i = 0; i < dim*3; i++) {
             angebot = (HashMap) Blackboard.get(Integer.toString(i));
             int aQuality = (int) angebot.get("quality");                                        //genereller Ausschluss wenn Q-Delta > 2
+            qualities[i] = aQuality;
             int aQuantity = (int) angebot.get("quantity");
             if (Math.abs(aQuality - quality) > 2){
                 maxPositions[i] = 0;
@@ -89,7 +91,7 @@ public class PSOBehaviour extends Behaviour {
             while (notASolution) {
                 // Create a swarm (using 'MyParticle' as sample particle and 'MyFitnessFunction' as fitness function)
                 PSOParticle.DIMENSION = dim * 3;
-                PSOFitnessFunction f = new PSOFitnessFunction(quality, demand, dim, supplyRest, constraint, distances);
+                PSOFitnessFunction f = new PSOFitnessFunction(quality, demand, dim, supplyRest, constraint, distances, qualities);
                 Swarm swarm = new Swarm(25, new PSOParticle(), f);
 
                 // Use neighborhood

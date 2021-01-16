@@ -122,12 +122,14 @@ public class SAProblem implements OptimizationProblem {
         SAState sas = (SAState)s;
         double[] position = sas.getVector();
         //HashMap<String, Object> angebot = new HashMap();
+        /*
         for (int i = 0; i < this.dimensions*3; i++) {
             count += position[i];
         }
         if (count > (double)this.demand) {                 //hohe Strafkosten für jede Einheit über Quantity
             obj = count;
         } else {                                        //hier eigentliche Berechnung der Fitness
+         */
             double distCost = 0;
             double qualCost = 0;
             double amount = 0;
@@ -149,12 +151,16 @@ public class SAProblem implements OptimizationProblem {
                     amount += position[i];
                 }
             }
-            if (amount > 0) {
-                obj += 0.47 * (distCost / (140000 * this.demand)) + 0.03 * (qualCost / this.demand) + 0.5 * ((this.demand - amount) / this.demand);
+            if (amount > (double)this.demand) {
+                obj = amount;
             } else {
-                obj += 0.5;
+                if (amount > 0) {
+                    obj += 0.47 * (distCost / (140000 * this.demand)) + 0.03 * (qualCost / this.demand) + 0.5 * ((this.demand - amount) / this.demand);
+                } else {
+                    obj += 0.5;
+                }
             }
-        }
+        //}
         return obj;
     }
 

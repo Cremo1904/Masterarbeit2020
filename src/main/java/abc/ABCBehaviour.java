@@ -19,10 +19,12 @@ public class ABCBehaviour extends Behaviour {
 
         int[] validSupplies = new int[dim*3];
         HashMap<String, Object> angebot = new HashMap();
+        int[] qualities = new int[dim*3];
         boolean atLeastOne = false;
         for (int i = 0; i < dim*3; i++) {
             angebot = (HashMap) Blackboard.get(Integer.toString(i));
             int aQuality = (int) angebot.get("quality");                                        //genereller Ausschluss wenn Q-Delta > 2
+            qualities[i] = aQuality;
             int aQuantity = (int) angebot.get("quantity");
             if (Math.abs(aQuality - quality) > 2){
                 validSupplies[i] = -1;
@@ -94,7 +96,7 @@ public class ABCBehaviour extends Behaviour {
 
             boolean notASolution = true;
             while (notASolution) {
-                ABCFitnessFunction abcFitFunc = new ABCFitnessFunction(quality, demand, dim, supplyRest, constraint, distances);
+                ABCFitnessFunction abcFitFunc = new ABCFitnessFunction(quality, demand, dim, supplyRest, constraint, distances, qualities);
                 ABCAlgorithm abc = new ABCAlgorithm(dim, demand, validSupplies, 200 , 200 , 100, abcFitFunc );
                 abc.algorithm();
                 vector = abc.bestFoodSource.getVector();

@@ -293,6 +293,10 @@ public class MiniMAS {
 		return this.runden;
 	}
 
+	public double getAktuell() {
+		return aktuell;
+	}
+
 	public boolean isFirstRound() {
 		if (this.runden < this.agents.size()) {
 			return true;
