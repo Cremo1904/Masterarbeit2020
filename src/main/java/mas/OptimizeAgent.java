@@ -35,7 +35,7 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
 
     public void init() {
         this.limit = 0;
-        double tv = 0.5 * dim;
+        double tv = 0.5;
         createKappa(tv);
     }
 
