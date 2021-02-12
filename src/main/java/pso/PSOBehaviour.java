@@ -6,19 +6,31 @@ import net.sourceforge.jswarm_pso.Neighborhood1D;
 import net.sourceforge.jswarm_pso.Swarm;
 import java.util.HashMap;
 
-
+/**
+ * Particle swarm optimization behaviour of the OptimizeAgent
+ * @author Lukas Cremers
+ */
 public class PSOBehaviour extends Behaviour {
 
     public PSOBehaviour (int id) {
         super(id);
     }
 
+    /**
+     * generates a solution for given inputs
+     * @param demand: demanded units
+     * @param quality: quality type of demand
+     * @param supplyRest: rest units from all supplies
+     * @param dim: number demands
+     * @param constraint: constraint id
+     * @param distances: calculated distances for all possible paths
+     * @return solution vector
+     */
     @Override
     public double[] generateSolution(int demand, int quality, HashMap<String, Object> supplyRest, int dim, int constraint, double[] distances) {
 
-
+        /** calculate valid search space*/
         double[] vector = new double[dim*3];
-
         double[] maxPositions = new double[dim*3];
         int[] qualities = new int[dim*3];
         HashMap<String, Object> angebot = new HashMap();
@@ -85,7 +97,7 @@ public class PSOBehaviour extends Behaviour {
         }
 
 
-
+        /** set up and use algorithm*/
         if (atLeastOne) {
             boolean notASolution = true;
             while (notASolution) {

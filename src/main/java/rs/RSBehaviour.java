@@ -8,12 +8,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * Random Search behaviour of the OptimizeAgent
+ * @author Lukas Cremers
+ */
 public class RSBehaviour extends Behaviour {
 
     public RSBehaviour (int id) {
         super(id);
     }
 
+    /**
+     * generates a solution for given inputs
+     * @param demand: demanded units
+     * @param quality: quality type of demand
+     * @param supplyRest: rest units from all supplies
+     * @param dim: number demands
+     * @param constraint: constraint id
+     * @param distances: calculated distances for all possible paths
+     * @return solution vector
+     */
     @Override
     public double[] generateSolution(int demand, int quality, HashMap<String, Object> supplyRest, int dim, int constraint, double[] distances) {
         double[] vector = new double[dim*3];
@@ -71,8 +85,8 @@ public class RSBehaviour extends Behaviour {
     }
 
 
+    /** verifies if demand and supply are matching */
     public boolean matching(int quality, HashMap<String, Object> supplyRest, int m, int constraint, double dist) {
-
         HashMap<String, Object> angebot = new HashMap();
         angebot = (HashMap) Blackboard.get(Integer.toString(m));
         if (Math.abs(quality - (int) angebot.get("quality")) <= 2) { //bedeutet, erstmal grundsätzlich wählbar unabhängig von constraints
@@ -91,6 +105,7 @@ public class RSBehaviour extends Behaviour {
         return false;
     }
 
+    /** checks if constraints are violated */
     public boolean checkConstraints(int quality, HashMap<String, Object> supplyRest, int rn, int constraint, double dist) {
         boolean notMatching = false;
         HashMap<String, Object> angebot = new HashMap();

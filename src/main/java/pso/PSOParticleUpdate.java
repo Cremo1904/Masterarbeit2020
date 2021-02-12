@@ -13,6 +13,9 @@ import net.sourceforge.jswarm_pso.Swarm;
  * 		- end(Swarm) : Once at the end of each iteration
  *
  * @author Pablo Cingolani <pcingola@users.sourceforge.net>
+ *
+ * modified by
+ * @author Lukas Cremers
  */
 public class PSOParticleUpdate extends ParticleUpdate {
 

@@ -2,6 +2,11 @@ package mas;
 
 import java.util.Comparator;
 
+/**
+ * Comparator for MiniMAS Message Events
+ * @author Christian Hinrichs
+ * @author Jörg Bremer
+ */
 public class MMEventComparator implements Comparator<MMEvent> {
 
 	@Override

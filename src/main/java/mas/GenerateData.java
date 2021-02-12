@@ -1,18 +1,19 @@
 package mas;
 
-import org.apache.commons.math3.random.MersenneTwister;
-
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Main class for generating datasets representing demand and supply
+ * @author Lukas Cremers
+ */
 public class GenerateData {
 
     public static void main(String[] args) {
 
         // Generating Data
-
-        int n = 30;
+        /*
+        int n = 50;
         int count8 = 0;
         int count7 = 0;
         int count6 = 0;
@@ -23,7 +24,7 @@ public class GenerateData {
         int count1 = 0;
 
         try {
-            FileWriter fw = new FileWriter("");
+            FileWriter fw = new FileWriter("Nachfragen_medium_c2ttsdsadsa");
             BufferedWriter bw = new BufferedWriter(fw);
 
             int q = 1;
@@ -55,7 +56,7 @@ public class GenerateData {
                 bw.write(Math.round(99 * rng.nextDouble() + 1) + "\n");
                 double constraint = rng.nextDouble();
 
-                /*
+
                 //c1
                 if (constraint >= 0.7) {
                     bw.write(8 + "\n");
@@ -83,7 +84,7 @@ public class GenerateData {
                     count1++;
                 }
 
-                 */
+
 
 
                 //c2
@@ -103,6 +104,26 @@ public class GenerateData {
                     bw.write(8 + "\n");
                     count8++;
                 }
+
+
+
+                //c3
+                if (constraint >= 0.8) {
+                    bw.write(1 + "\n");
+                    count1++;
+                } else if(constraint >= 0.6) {
+                    bw.write(2 + "\n");
+                    count2++;
+                } else if(constraint >= 0.4) {
+                    bw.write(3 + "\n");
+                    count3++;
+                } else {
+                    bw.write(8 + "\n");
+                    count8++;
+                }
+
+
+
             }
 
             bw.close();
@@ -111,7 +132,7 @@ public class GenerateData {
         } catch (IOException e) {
 
         }
-
+*/
 
 
 
@@ -120,9 +141,9 @@ public class GenerateData {
 
 
         //Sorting Data
-        /*
+
         try {
-            FileReader fr = new FileReader("Nachfragen_large_c2u");
+            FileReader fr = new FileReader("Nachfragen_medium_c2tt");
             BufferedReader br = new BufferedReader(fr);
             HashMap<Integer, Object> c1 = new HashMap();
             HashMap<Integer, Object> c2 = new HashMap();
@@ -134,7 +155,7 @@ public class GenerateData {
             HashMap<Integer, Object> c8 = new HashMap();
 
 
-            for (int i = 0; i < 250; i++) {                      //hier größe des datensatzes eingeben
+            for (int i = 0; i < 50; i++) {                      //hier größe des datensatzes eingeben
                 double[] array = new double[6];
                 array[0] = Double.parseDouble(br.readLine());
                 array[1] = Double.parseDouble(br.readLine());
@@ -178,7 +199,7 @@ public class GenerateData {
                         break;
                 }
             }
-            FileWriter fw = new FileWriter("Nachfragen_large_c2t");
+            FileWriter fw = new FileWriter("Nachfragen_medium_c2t");
             BufferedWriter bw = new BufferedWriter(fw);
 
             double[] myDemand;
@@ -260,7 +281,7 @@ public class GenerateData {
         } catch (IOException e) {
 
         }
-        */
+
 
 
     }

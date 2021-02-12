@@ -1,22 +1,35 @@
 package sa;
 
-
 import mas.Behaviour;
 import mas.Blackboard;
 
 import java.util.HashMap;
 
+/**
+ * Simulated Annealing behaviour of the OptimizeAgent
+ * @author Lukas Cremers
+ */
 public class SABehaviour extends Behaviour {
 
     public SABehaviour (int id) {
         super(id);
     }
 
+    /**
+     * generates a solution for given inputs
+     * @param demand: demanded units
+     * @param quality: quality type of demand
+     * @param supplyRest: rest units from all supplies
+     * @param dim: number demands
+     * @param constraint: constraint id
+     * @param distances: calculated distances for all possible paths
+     * @return solution vector
+     */
     @Override
     public double[] generateSolution(int demand, int quality, HashMap<String, Object> supplyRest, int dim, int constraint, double[] distances) {
         double[] vector = new double[dim*3];
 
-
+        /** calculate valid search space*/
         int[] validSupplies = new int[dim*3];
         HashMap<String, Object> angebot = new HashMap();
         int[] qualities = new int[dim*3];
@@ -87,7 +100,7 @@ public class SABehaviour extends Behaviour {
             atLeastOne = true;
         }
 
-
+        /** set up and use algorithm*/
         if (atLeastOne) {
             boolean notASolution = true;
             while (notASolution) {

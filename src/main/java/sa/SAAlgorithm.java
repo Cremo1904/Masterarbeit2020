@@ -3,10 +3,16 @@ package sa;
 import javafx.util.Pair;
 import util.Action;
 import util.State;
-
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * the simulated annealing algorithm
+ * @author Armin Kazemi, original code: github.com/arminkz/OptimizationAlgorithms
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public class SAAlgorithm {
 
     //Cooling rate
@@ -21,6 +27,7 @@ public class SAAlgorithm {
     private ArrayList<Action> solution;
     public SAState finalState;
 
+    /** start searching process */
     public void solve(OptimizationProblem op, SimulatedAnnealingStrategy strategy , boolean maximize){
 
         State currentState = op.initialState();
@@ -96,6 +103,7 @@ public class SAAlgorithm {
 
     }
 
+    /** calculate acceptance probability for generated solution*/
     private static double acceptanceProbability(double currentDistance, double newDistance, double temperature , boolean maximize) {
         if(!maximize){
             // If the new solution is better, accept it

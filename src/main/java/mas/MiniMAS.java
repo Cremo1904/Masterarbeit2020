@@ -12,7 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-
+/**
+ * Multi-agent platform MiniMAS
+ * @author Christian Hinrichs
+ * @author Jörg Bremer
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public class MiniMAS {
 
 	Map<String, AbstractAgent> agents = new HashMap<String, AbstractAgent>();
@@ -48,6 +55,7 @@ public class MiniMAS {
 		}
 	}
 
+	/** add agents to MiniMAS */
 	public void add(AbstractAgent agent) {
 		agent.setMAS(this);
 		this.agents.put(agent.getId(), agent);		
@@ -124,6 +132,7 @@ public class MiniMAS {
 		}
 	}
 
+	/** initialize GraphHopper for calculating distances */
 	public void initHopper() {
 
 		hopper = new GraphHopperOSM().forServer();
@@ -146,23 +155,13 @@ public class MiniMAS {
 
 	}
 
+	/** coordinate agent communication and agent activation */
 	public void execute() {
 
 		this.initAgents();
 		runden = 0;
 		summen = "";
 		while (true) {
-			/*
-			aktuell = 0;
-			double i = 0.0;
-			for (AbstractAgent a:agents.values()) {
-				aktuell = aktuell + a.getValue();
-				i++;
-			}
-			aktuell = aktuell / i;
-			System.out.println("Runde " + runden + " ; Lösung aktuell: " + aktuell + "\n");
-			summen = summen + runden + "   " + aktuell + System.lineSeparator();
-			 */
 
 			aktuell = agents.size();
 			for (AbstractAgent a:agents.values()) {
@@ -227,6 +226,7 @@ public class MiniMAS {
 		}
 	}
 
+	/** deliver message to addressee */
 	public void sendMessage(Message msg) {
 		msgCount++;
 		queue.add(new MMMsgEvent(time+1, msg));		

@@ -1,13 +1,18 @@
 package sa;
 
 import util.Action;
-import mas.Blackboard;
 import util.State;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * operations to be performed during algorithm run
+ * @author Armin Kazemi, original code: github.com/arminkz/OptimizationAlgorithms
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public class SAProblem implements OptimizationProblem {
 
     int dimensions;
@@ -35,11 +40,13 @@ public class SAProblem implements OptimizationProblem {
         return demand;
     }
 
+    /** create initial state */
     @Override
     public State initialState() {
         return (new SAState(dimensions*3, demand));
     }
 
+    /** calculate possible actions for current state */
     @Override
     public ArrayList<Action> actions(State s) {
         SAState sas = (SAState)s;
@@ -96,6 +103,7 @@ public class SAProblem implements OptimizationProblem {
         return actions;
     }
 
+    /** calculate result for performing chosen action on current state */
     @Override
     public ArrayList<State> result(State s, Action a) {
         SAState sas = (SAState)s;
@@ -113,30 +121,19 @@ public class SAProblem implements OptimizationProblem {
         return singleState;
     }
 
+    /** evaluate fitness for state */
     @Override
     public double eval(State s) {
         this.calls++;
         double count = 0;
         double obj = 0;
-        //int aQuality;
         SAState sas = (SAState)s;
         double[] position = sas.getVector();
-        //HashMap<String, Object> angebot = new HashMap();
-        /*
-        for (int i = 0; i < this.dimensions*3; i++) {
-            count += position[i];
-        }
-        if (count > (double)this.demand) {                 //hohe Strafkosten für jede Einheit über Quantity
-            obj = count;
-        } else {                                        //hier eigentliche Berechnung der Fitness
-         */
             double distCost = 0;
             double qualCost = 0;
             double amount = 0;
             for (int i = 0; i < this.dimensions*3; i++) {
                 if (position[i] > 0) {
-                    //angebot = (HashMap) Blackboard.get(Integer.toString(i));
-                    //aQuality = (int) angebot.get("quality");
                     double dist = this.distances[i];
                     double delta = Math.abs(this.quality - this.qualities[i]);
                     if (delta == 0) {
@@ -160,11 +157,10 @@ public class SAProblem implements OptimizationProblem {
                     obj += 0.5;
                 }
             }
-        //}
         return obj;
     }
 
-
+    /** check if solution is valid */
     public boolean checkSolution(double[] position) {
         double count = 0;
         for (int i = 0; i < this.dimensions*3; i++) {
@@ -183,6 +179,13 @@ public class SAProblem implements OptimizationProblem {
 
 }
 
+/**
+ * solution vector
+ * @author Armin Kazemi, original code: github.com/arminkz/OptimizationAlgorithms
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 class SAState implements State{
 
     private double[] vector;
@@ -212,6 +215,13 @@ class SAState implements State{
     }
 }
 
+/**
+ * action to be performed on a state
+ * @author Armin Kazemi, original code: github.com/arminkz/OptimizationAlgorithms
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 class SAAction implements Action{
 
     int dim;
@@ -228,17 +238,6 @@ class SAAction implements Action{
         this.dim2 = dim2;
         this.from2 = from2;
         this.to2 = to2;
-    }
-
-
-    @Override
-    public String description() {
-        return "Move Queen of Column";
-    }
-
-    @Override
-    public int actionCode() {
-        return 0;
     }
 }
 

@@ -10,6 +10,10 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Main class for setting up and starting simulations
+ * @author Lukas Cremers
+ */
 public class InitSimulation {
 
     public static void main(String[] args) {
@@ -17,9 +21,9 @@ public class InitSimulation {
 
         // set up simulation
         int m=10;                       // Anzahl Agenten                       10; 50; 250
-        double rep = 2.0;              // Anzahl Wiederholungen
-        int algo = 1;                   // Algorithmus wählen,                  1: RS; 2: PSO; 3: SA; 4: ES; 5: ABC
-        int c = 1;                      // Constraint-Verteilung                1: C1; 2: C2
+        double rep = 100.0;              // Anzahl Wiederholungen
+        int algo = 5;                   // Algorithmus wählen,                  1: RS; 2: PSO; 3: SA; 4: ES; 5: ABC
+        int c = 0;                      // Constraint-Verteilung                1: C1; 2: C2
         boolean readDist = true;        // Distanzen lesen oder berechnen       true: lesen; false: berechnen
 
 
@@ -47,7 +51,9 @@ public class InitSimulation {
             } else {
                 scenario = "large";
             }
-            if (c == 1) {
+            if (c == 0) {
+                scenario = scenario + "_c0";
+            } else if (c == 1) {
                 scenario = scenario + "_c1";
             } else {
                 scenario = scenario + "_c2";
@@ -115,15 +121,14 @@ public class InitSimulation {
                         bw.write(distances[j] + "\n");
                     }
                 }
-                if (!readDist) {
-                    bw.close();
-                }
 
                 //add agents to mas
                 agents[i] = new OptimizeAgent(UUID.randomUUID().toString(), index, m, quality, quantity, constraint, algo, distances);
                 mas.add(agents[i]);
             }
-
+            if (!readDist) {
+                bw.close();
+            }
 
             //connect agents, create neighborhood
             int j;

@@ -8,6 +8,11 @@ import sa.SABehaviour;
 
 import java.util.*;
 
+
+/**
+ * Agent dedicated to solving chosen optimization problem
+ * @author Lukas Cremers
+ */
 public class OptimizeAgent extends AbstractCOHDAAgent {
 
     private int dim;
@@ -33,13 +38,14 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
         this.distances = distances;
     }
 
+    /** initialize agent */
     public void init() {
         this.limit = 0;
         double tv = 0.5;
         createKappa(tv);
     }
 
-
+    /** perform behaviour to generate solution candidate and evaluate if solution candidate is useful */
     @Override
     protected WorkingMemory decide() {
 
@@ -172,7 +178,7 @@ public class OptimizeAgent extends AbstractCOHDAAgent {
         }
     }
 
-
+    /** calculate objective value for given network state */
     @Override
     public double objective(HashMap<String, Object> demandInput, HashMap<String, Object> edgesInput) {
         Set<String> keys = demandInput.keySet();

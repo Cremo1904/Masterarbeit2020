@@ -1,4 +1,5 @@
-package util;/*
+package util;
+/*
  * util.WattsStrogatzRandomGraph.java
  * Created Aug 6, 2010
  */
@@ -17,7 +18,6 @@ public class WattsStrogatzRandomGraph {
      * @param n number of nodes in resulting graph
      * @param deg average degree of resulting graph
      * @param rewiring probability of edge-rewiring in resulting graph
-     * @return 
      * @return new instance of a Watts-Strogatz random graph
      */
     public static ArrayList<Integer[]> connectSmallWorld(int n, int deg, float rewiring) {

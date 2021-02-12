@@ -2,6 +2,13 @@ package abc;
 
 import java.util.Random;
 
+/**
+ * solution candidate
+ * @author Kubo Shizuma, original code: github.com/kuboshizuma/swarm-intelligence
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public class ABCFood implements Comparable<ABCFood> {
     private int dimensions;
     private double[] vector;
@@ -24,6 +31,7 @@ public class ABCFood implements Comparable<ABCFood> {
         initVector();
     }
 
+    /** initiate solution vector */
     public void initVector() {
         int index = rnd.nextInt(this.dimensions*3);
         while (validSupplies[index] < 1) {
@@ -36,6 +44,7 @@ public class ABCFood implements Comparable<ABCFood> {
         this.vector[index] = quantity;
     }
 
+    /** compare two food sources */
     public int compareTo(ABCFood otherFood) {
         int result = 0;
         if (this.cost < otherFood.getCost()) {

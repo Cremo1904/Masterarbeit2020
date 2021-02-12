@@ -3,6 +3,14 @@ package mas;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Instance for centralised storage and access to information
+ * @author Christian Hinrichs
+ * @author Jörg Bremer
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public class Blackboard {
 	private static Map<String, Object> memory=new HashMap<String, Object>();
 	private static int delay = 0;

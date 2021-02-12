@@ -2,6 +2,10 @@ package mas;
 
 import java.util.HashMap;
 
+/**
+ * Behaviour of an agent
+ * @author Lukas Cremers
+ */
 public abstract class Behaviour {
 
     private int id;

@@ -1,15 +1,14 @@
 package pso;
 
-import mas.Blackboard;
 import net.sourceforge.jswarm_pso.FitnessFunction;
-
 import java.util.HashMap;
 
 /**
- * Sample Fitness function
- * 		f( x1 , x2 ) = 1 - Sqrt( ( x1 - 1/2 )^2 + ( x2 - 1/2 )^2 )
- *
+ * fitness function to evaluate fitness of solution candidates
  * @author Pablo Cingolani <pcingola@users.sourceforge.net>
+ *
+ * modified by
+ * @author Lukas Cremers
  */
 public class PSOFitnessFunction extends FitnessFunction {
 
@@ -48,23 +47,11 @@ public class PSOFitnessFunction extends FitnessFunction {
         double count = 0;
         double obj = 0;
         int aQuality;
-        //HashMap<String, Object> angebot = new HashMap();
-        /*
-        for (int i = 0; i < this.dim*3; i++) {
-            count += position[i];
-        }
-        if (count > (double)this.quantity) {                 //hohe Strafkosten für jede Einheit über Quantity
-            obj = count;
-        } else {                                        //hier eigentliche Berechnung der Fitness
-
-         */
             double distCost = 0;
             double qualCost = 0;
             double amount = 0;
             for (int i = 0; i < this.dim*3; i++) {
                 if (position[i] > 0) {
-                    //angebot = (HashMap) Blackboard.get(Integer.toString(i));
-                    //aQuality = (int) angebot.get("quality");
                     aQuality = this.qualities[i];
                     double dist = this.distances[i];
                     double delta = Math.abs(this.quality - aQuality);
@@ -89,10 +76,14 @@ public class PSOFitnessFunction extends FitnessFunction {
                     obj += 0.5;
                 }
             }
-        //}
         return obj;
     }
 
+    /**
+     * Checks if solution is valid
+     * @param position: Particle's position
+     * @return true or false
+     */
     public boolean checkSolution(double[] position) {
         double count = 0;
         for (int i = 0; i < this.dim*3; i++) {

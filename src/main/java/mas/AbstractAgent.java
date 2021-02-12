@@ -4,7 +4,14 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Abstract MiniMAS agent
+ * @author Christian Hinrichs
+ * @author Jörg Bremer
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public abstract class AbstractAgent {
 	private MiniMAS mas;
 	private ArrayDeque<Message> msgs=new ArrayDeque<>();

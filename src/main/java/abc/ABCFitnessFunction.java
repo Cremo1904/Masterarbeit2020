@@ -1,9 +1,14 @@
 package abc;
 
-import mas.Blackboard;
-
 import java.util.HashMap;
 
+/**
+ * fitness function to evaluate fitness of solution candidates
+ * @author Kubo Shizuma, original code: github.com/kuboshizuma/swarm-intelligence
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public class ABCFitnessFunction {
     int quality;
     int quantity;
@@ -25,28 +30,17 @@ public class ABCFitnessFunction {
         this.qualities = qualities;
     }
 
+    /** evaluate fitness for position */
     public double eval(double[] position) {
         this.calls++;
         double count = 0;
         double obj = 0;
         int aQuality;
-        //HashMap<String, Object> angebot = new HashMap();
-        /*
-        for (int i = 0; i < this.dim * 3; i++) {
-            count += position[i];
-        }
-        if (count > (double) this.quantity) {                 //hohe Strafkosten für jede Einheit über Quantity
-            obj = count;
-        } else {                                        //hier eigentliche Berechnung der Fitness
-
-         */
             double distCost = 0;
             double qualCost = 0;
             double amount = 0;
             for (int i = 0; i < this.dim * 3; i++) {
                 if (position[i] > 0) {
-                    //angebot = (HashMap) Blackboard.get(Integer.toString(i));
-                    //aQuality = (int) angebot.get("quality");
                     aQuality = this.qualities[i];
                     double dist = this.distances[i];
                     double delta = Math.abs(this.quality - aQuality);
@@ -71,11 +65,11 @@ public class ABCFitnessFunction {
                     obj += 0.5;
                 }
             }
-        //}
         return obj;
 
     }
 
+    /** check if solution is valid */
     public boolean checkSolution(double[] position) {
         double count = 0;
         for (int i = 0; i < this.dim*3; i++) {

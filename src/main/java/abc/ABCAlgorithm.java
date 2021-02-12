@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
 
-
+/**
+ * the artificial bee colony algorithm
+ * @author Kubo Shizuma, original code: github.com/kuboshizuma/swarm-intelligence
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public class ABCAlgorithm {
     public int dim;
     public int demand;
@@ -32,6 +38,7 @@ public class ABCAlgorithm {
         this.fitFunc = fitFunc;
     }
 
+    /** run searching process */
     public void algorithm() {
         foodSources = new ArrayList<>();
         rnd = new Random();
@@ -59,6 +66,7 @@ public class ABCAlgorithm {
         System.out.println("solution found:" + bestFoodSource.getCost());
     }
 
+    /** create initial population */
     public void initialize() {
         int j;
         for(int i = 0; i < numberOfFoodSources; i++) {
@@ -75,12 +83,14 @@ public class ABCAlgorithm {
         bestFoodSource = Collections.min(foodSources);
     }
 
+    /** calculate cost for food source */
     public void calculateCost(ABCFood abcFood) {
         double[] vector = abcFood.getVector();
         double cost = fitFunc.eval(vector);
         abcFood.setCost(cost);
     }
 
+    /** send out employed Bees to random food sources */
     public void sendEmployedBees() {
         int index;
         ABCFood currentBee;
@@ -97,6 +107,7 @@ public class ABCAlgorithm {
         }
     }
 
+    /** recruit onlooker bees */
     public void sendOnlookerBees() {
         int i = 0;
         int n = 0;
@@ -122,6 +133,7 @@ public class ABCAlgorithm {
         }
     }
 
+    /** send scout bees to replace abondened solutions */
     public void sendScoutBees() {
         ABCFood currentBee;
 
@@ -135,6 +147,7 @@ public class ABCAlgorithm {
         }
     }
 
+    /** mutate solution */
     public void sendOut(ABCFood currentBee, ABCFood neighborBee) {
         double newCost;
         double oldCost;
@@ -169,6 +182,7 @@ public class ABCAlgorithm {
         }
     }
 
+    /** calculate selection probabilities for discovered food sources */
     public void calculateProbabilities() {
         ABCFood currentBee;
         double fitnessSum = 0;
@@ -184,6 +198,7 @@ public class ABCAlgorithm {
         }
     }
 
+    /** calculate normalized fitness values */
     public void getFitness() {
         ABCFood currentBee;
         double cost;

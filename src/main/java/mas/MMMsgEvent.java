@@ -1,5 +1,10 @@
 package mas;
 
+/**
+ * MiniMAS Message Event
+ * @author Christian Hinrichs
+ * @author Jörg Bremer
+ */
 public class MMMsgEvent extends MMEvent {
 
 	private Message message;

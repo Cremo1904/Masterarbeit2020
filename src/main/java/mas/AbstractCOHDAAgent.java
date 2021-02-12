@@ -2,8 +2,20 @@ package mas;
 
 import java.util.*;
 
+/**
+ * Agent which follows perceive decide act concept
+ * @author Christian Hinrichs
+ * @author Jörg Bremer
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public abstract class AbstractCOHDAAgent extends AbstractAgent {
 
+	/**
+	 * Represents a single demand
+	 * @author Lukas Cremers
+	 */
 	public class demand {
 		private double rest;
 		private double quantity;
@@ -44,6 +56,10 @@ public abstract class AbstractCOHDAAgent extends AbstractAgent {
 		}
 	}
 
+	/**
+	 * Represents a single edge
+	 * @author Lukas Cremers
+	 */
 	public class edges {
 		public int supply;
 		public String demand;
@@ -100,6 +116,14 @@ public abstract class AbstractCOHDAAgent extends AbstractAgent {
 		}
 	}
 
+	/**
+	 * Represents the memory of an agent, stores the current state of the network
+	 * @author Christian Hinrichs
+	 * @author Jörg Bremer
+	 *
+	 * modified by
+	 * @author Lukas Cremers
+	 */
 	public class WorkingMemory {
 		private HashMap<String, Object> supplyRest;
 		private HashMap<String, Object> myDemand;
@@ -231,6 +255,7 @@ public abstract class AbstractCOHDAAgent extends AbstractAgent {
 		super(id);
 	}
 
+	/** agent is called and performs its actions */
 	@Override
 	public void step(long time) {
 
@@ -391,6 +416,7 @@ public abstract class AbstractCOHDAAgent extends AbstractAgent {
 		}
 	}
 
+	/** decides whether new solution candidate is useful or not */
 	protected void decide_internal() {
 
 		WorkingMemory kappaNew = decide();

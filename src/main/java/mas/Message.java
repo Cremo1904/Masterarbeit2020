@@ -1,5 +1,10 @@
 package mas;
 
+/**
+ * Message to be sent by agents
+ * @author Christian Hinrichs
+ * @author Jörg Bremer
+ */
 public class Message {
 	
 	private String addressee; 

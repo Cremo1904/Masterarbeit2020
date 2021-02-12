@@ -1,12 +1,18 @@
 package es;
 
 import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+/**
+ * the evolution strategies algorithm
+ * @author Armin Kazemi, original code: github.com/arminkz/OptimizationAlgorithms
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public class ESAlgorithm {
 
     private int population_size;
@@ -21,6 +27,7 @@ public class ESAlgorithm {
 
     public EvolutionaryState finalState;
 
+    /** start searching process */
     public void solve(GeneticProblem gp,int generations){
 
         //initialization

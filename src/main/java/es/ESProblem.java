@@ -1,13 +1,17 @@
 package es;
 
-import mas.Blackboard;
 import util.State;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-
+/**
+ * operations to be performed during algorithm run
+ * @author Armin Kazemi, original code: github.com/arminkz/OptimizationAlgorithms
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 public class ESProblem implements GeneticProblem {
 
     int dimensions;
@@ -31,6 +35,7 @@ public class ESProblem implements GeneticProblem {
         this.qualities = qualities;
     }
 
+    /** create initial population */
     @Override
     public ArrayList<EvolutionaryState> initialPopulation(int size) {
         ArrayList<EvolutionaryState> result = new ArrayList<>();
@@ -44,30 +49,18 @@ public class ESProblem implements GeneticProblem {
         return result;
     }
 
+    /** evaluate fitness for state */
     @Override
     public double fitness(EvolutionaryState mes) {
         this.calls++;
-        //double count = 0;
         double obj = 0;
         int aQuality;
         double[] position = mes.vector;
-        //HashMap<String, Object> angebot = new HashMap();
-        /*
-        for (int i = 0; i < this.dimensions*3; i++) {
-            count += position[i];
-        }
-        if (count > (double)this.demand) {                 //hohe Strafkosten für jede Einheit über Quantity
-            obj = count;
-        } else {                                        //hier eigentliche Berechnung der Fitness
-
-         */
             double distCost = 0;
             double qualCost = 0;
             double amount = 0;
             for (int i = 0; i < this.dimensions*3; i++) {
                 if (position[i] > 0) {
-                    //angebot = (HashMap) Blackboard.get(Integer.toString(i));
-                    //aQuality = (int) angebot.get("quality");
                     aQuality = this.qualities[i];
                     double dist = this.distances[i];
                     double delta = Math.abs(this.quality - aQuality);
@@ -92,11 +85,11 @@ public class ESProblem implements GeneticProblem {
                     obj += 0.5;
                 }
             }
-        //}
         return obj;
 
     }
 
+    /** check if solution is valid */
     public boolean checkSolution(double[] position) {
         double count = 0;
         for (int i = 0; i < this.dimensions*3; i++) {
@@ -109,6 +102,7 @@ public class ESProblem implements GeneticProblem {
         }
     }
 
+    /** perform crossover on two individuals */
     @Override
     public EvolutionaryState crossover(double[] v1, double[] v2) {
         EvolutionaryState result = new EvolutionaryState(dimensions*3);
@@ -126,6 +120,7 @@ public class ESProblem implements GeneticProblem {
 
     }
 
+    /** perform mutation on individual */
     @Override
     public EvolutionaryState mutate(EvolutionaryState mes) {
 
@@ -170,6 +165,13 @@ public class ESProblem implements GeneticProblem {
 
 }
 
+/**
+ * solution vector
+ * @author Armin Kazemi, original code: github.com/arminkz/OptimizationAlgorithms
+ *
+ * modified by
+ * @author Lukas Cremers
+ */
 class EvolutionaryState implements State {
 
     public double vector[];
